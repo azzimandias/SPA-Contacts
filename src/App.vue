@@ -9,7 +9,10 @@
 
 <style>
 * {
+  max-width: 1000px;
   background-color: cornsilk;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #app {
