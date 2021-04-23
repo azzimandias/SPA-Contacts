@@ -45,10 +45,16 @@ export default {
       if (this.flag) {
         this.old_key = key;
         this.old_value = value;
-        this.$emit('save');
         this.flag = false;
       }
     }
   }
 }
 </script>
+
+<style>
+li {
+  display: flex;
+  justify-content: space-between;
+}
+</style>

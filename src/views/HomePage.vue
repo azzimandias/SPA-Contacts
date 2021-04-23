@@ -3,7 +3,7 @@
     <h2>Записная книжка</h2>
     <ul v-if="!isEmpty">
       <Contact
-          v-for="(contact, index) in allContacts"
+          v-for="(contact, index) in contacts"
           :key="index"
           :index="index"
           :firstName="contact.firstName"
@@ -26,12 +26,13 @@
 </template>
 
 <script>
-import ContactPage from './ContactPage'
-import Contact from '../components/Contact'
-import AddContact from '../components/AddContact'
-import RemoveValidate from '../components/RemoveValidate'
+import ContactPage from './ContactPage';
+import Contact from '../components/Contact';
+import AddContact from '../components/AddContact';
+import RemoveValidate from '../components/RemoveValidate';
 
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'HomePage',
@@ -52,7 +53,7 @@ export default {
   methods: {
     addContact(newContact) {
       this.unShowModal();
-      this.allContacts.push(newContact);
+      this.contacts.push(newContact);
       this.isEmpty = false;
     },
     showAddModal() {
@@ -61,21 +62,24 @@ export default {
     },
     showDelModal(index) {
       this.modalName = 'DelOnFirstPage';
-      this.delitedContactName = this.allContacts[index].firstName;
+      this.delitedContactName = this.contacts[index].firstName;
       this.delIndex = index;
       this.wannaShow = true;
     },
     removeContact() {
       this.unShowModal();
-      this.allContacts.splice(this.delIndex, 1);
+      this.contacts.splice(this.delIndex, 1);
       this.delIndex = 0;
-      if (this.allContacts.length === 0) this.isEmpty = true;
+      if (this.contacts.length === 0) this.isEmpty = true;
     },
     unShowModal() {
       this.wannaShow = false;
     }
   },
-  computed: mapGetters(['allContacts'])
+  computed: {
+    //...mapGetters(['allContacts']),
+    ...mapState(['contacts'])
+  }
 }
 </script>
 
