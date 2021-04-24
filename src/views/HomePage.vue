@@ -5,7 +5,7 @@
       <Contact
           v-for="(contact, index) in contacts"
           :key="index"
-          :index="index"
+          :i="index"
           :firstName="contact.firstName"
           :lastName="contact.lastName"
           :secondName="contact.secondName"
@@ -31,7 +31,6 @@ import Contact from '../components/Contact';
 import AddContact from '../components/AddContact';
 import RemoveValidate from '../components/RemoveValidate';
 
-import { mapGetters } from 'vuex';
 import { mapState } from 'vuex';
 
 export default {
@@ -52,6 +51,9 @@ export default {
   }),
   methods: {
     addContact(newContact) {
+      //
+      //this.$store.commit('updateSaved')
+      //
       this.unShowModal();
       this.contacts.push(newContact);
       this.isEmpty = false;
@@ -77,15 +79,14 @@ export default {
     }
   },
   computed: {
-    //...mapGetters(['allContacts']),
-    ...mapState(['contacts'])
+    ...mapState(['contacts', 'savedMassiveOfValues'])
   }
 }
 </script>
 
 <style>
-  li {
+  /*li {
     display: flex;
     justify-content: space-between;
-  }
+  }*/
 </style>

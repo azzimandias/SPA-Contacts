@@ -46,7 +46,7 @@
 
     <div v-else-if="modalName === 'CanOnSecondPage'">
       <h4>Вы уверены, что хотите отменить последнее изменение?</h4>
-      <button @click="canceleNew()">Да</button>
+      <button @click="canceleAll()">Да</button>
       <button @click="unShowModal()">Нет</button>
     </div>
   </div>
@@ -84,8 +84,8 @@ export default {
     removeFild() {
       this.$emit('removeFild');
     },
-    canceleNew() {
-      this.$emit('canceleNew');
+    canceleAll() {
+      this.$emit('canceleAll');
     },
     unShowModal() {
       this.$emit('unShowModal');

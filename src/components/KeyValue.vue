@@ -1,6 +1,6 @@
 <template>
   <li>
-    <div>
+    <div class="inputs">
       <input
           type="text"
           v-model.lazy="val[0]"
@@ -16,7 +16,7 @@
     </div>
 
     <button
-        class="into"
+        class="into1"
         @click="showDellModal"
     >❌</button>
   </li>
@@ -55,6 +55,16 @@ export default {
 <style>
 li {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  padding: 0 0 10px 0;
+}
+
+.inputs {
+  margin: 0;
+}
+
+.into1 {
+  margin: 0;
 }
 </style>

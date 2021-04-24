@@ -15,11 +15,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex';
 
 export default {
   props: {
-    index: Number,
+    i: Number,
     firstName: {
       type: String,
       default: ''
@@ -45,13 +45,15 @@ export default {
               ${this.secondName}`;
     },
     showDelModal() {
-      this.$emit('showDelModal', this.index);
+      this.$emit('showDelModal', this.i);
     },
     newIndex() {
-      this.$store.commit('updateIndex', this.index);
+      this.$store.commit('updateIndex', this.i);
     }
   },
-  computed: mapGetters(['allContacts', 'getIndex'])
+  computed: {
+    ...mapState(['contacts', 'index'])
+  }
 
 }
 </script>

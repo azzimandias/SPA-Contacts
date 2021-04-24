@@ -35,36 +35,16 @@ export default new Vuex.Store({
         massiveOfValues: {}
       },
     ],
-    savedMassiveOfValues: {},
-    i: 0,
     index: 0,
   },
   getters: {
-    allContacts(state) {
-      return state.contacts;
-    },
-    getIndex(state) {
-      return state.index;
-    },
-    getSaved(state) {
-      return state.savedMassiveOfValues;
-    },
-    getI(state) {
-      return state.i;
-    }
   },
   mutations: {
     updateIndex(state, i) {
       state.index = i;
     },
-    updateObject(state, fir) {
-      delete (this.state.contacts[fir[0]].massiveOfValues)[fir[1]];
-    },
-    updateSaved(state, obj) {
-      if (this.state.i === 0) {
-        this.state.savedMassiveOfValues = obj;
-        this.state.i = 1;
-      }
+    updateContacts(state) {
+      state.contacts[state.index].massiveOfValues = {};
     }
   },
   actions: {
