@@ -8,19 +8,19 @@ export default new Vuex.Store({
   state: {
     contacts: [
       {
-        firstName: 'Andrew',
-        lastName: 'Sharanda',
-        secondName: 'Dmitrievitch',
+        firstName: 'Андрей',
+        lastName: 'Шаранда',
+        secondName: 'Дмитриевич',
         telNumber: '89118294005',
         massiveOfValues: {
           Email: 'andrew@yandex.ru',
-          work: 'Junior Frontend Developer'
+          Work: 'Junior Frontend Developer'
         }
       },
       {
-        firstName: 'Sofya',
-        lastName: 'Ogirok',
-        secondName: 'Dmitrievna',
+        firstName: 'Сонька',
+        lastName: 'Огирок',
+        secondName: 'Дмитриевна',
         telNumber: '89502223344',
         massiveOfValues: {
           Email: 'sonuaNya@yandex.ru',
@@ -28,7 +28,7 @@ export default new Vuex.Store({
         }
       },
       {
-        firstName: 'Dima',
+        firstName: 'Дима',
         lastName: undefined,
         secondName: undefined,
         telNumber: '89502223344',
@@ -43,9 +43,16 @@ export default new Vuex.Store({
     updateIndex(state, i) {
       state.index = i;
     },
-    updateContacts(state) {
+    updateContacts(state, obj) {
       state.contacts[state.index].massiveOfValues = {};
-    }
+      Object.assign(state.contacts[state.index].massiveOfValues, obj);
+    },
+    updateContactsDef(state, array) {
+      state.contacts[state.index].firstName = array[0];
+      state.contacts[state.index].lastName = array[1];
+      state.contacts[state.index].secondName = array[2];
+      state.contacts[state.index].telNumber = array[3];
+    },
   },
   actions: {
   },

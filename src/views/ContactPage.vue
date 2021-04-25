@@ -5,7 +5,7 @@
       <div @click="cleanSaved()">
         <router-link to="/">⬅</router-link>
       </div>
-      <h2>{{ getFullName() }}</h2>
+      <h2 class="forMargin1" >{{ getLastname }} {{ getName }} {{ getSecondname }}</h2>
     </div>
     <br>
     <div class="controls">
@@ -17,10 +17,20 @@
       <button @click="showAddModal()">➕</button>
     </div>
 
-    <ul>
+      <DefaultField
+          :firstName="this.firstName"
+          :lastName="this.lastName"
+          :secondName="this.secondName"
+          :telNumber="this.telNumber"
+          @go="go"
+      />
+
+    <hr/>
+
+    <ul v-if="!isEmpty">
       <KeyValue
-          v-for="val in Object.entries(savedMassiveOfValues)"
-          :key="val.id"
+          v-for="(val, i) in Object.entries(savedMassiveOfValues)"
+          :key="getKey(i)"
           :val="val"
           :newKeyValue="newKeyValue"
           @done="done"
@@ -28,6 +38,7 @@
           @showCanceleModal="showCanceleModal()"
       />
     </ul>
+    <p v-else>Здесь пусто</p>
 
     <div>
       <button
@@ -37,7 +48,7 @@
     </div>
 
     <div class="remove-window">
-      <RemoveValidate
+      <Validate
           v-if="wannaShow"
           :modalName="modalName"
           :delitedFieldName="delitedFieldName"
@@ -52,17 +63,18 @@
 
 <script>
 import KeyValue from '../components/KeyValue';
-import RemoveValidate from '../components/RemoveValidate';
+import Validate from '../components/Validate';
+import DefaultField from '../components/DefaultField'
 import { mapState } from 'vuex';
 
 export default {
   name: 'ContactPage',
   components: {
-    RemoveValidate,
-    KeyValue
+    Validate,
+    KeyValue,
+    DefaultField
   },
   data: () => ({
-    //componentKey: 0,
     newName: '',
     isEmpty: false,
     wannaShow: false,
@@ -76,42 +88,52 @@ export default {
     addedKeyValue: [],
     deletedKeyValue: [],
     changedKeyValue: [],
-    forOptimize: []
+    changedDefKeyValue: [],
+    forOptimize: [],
+    firstName: '',
+    lastName: '',
+    secondName: '',
+    telNumber: 0,
+    defArray: [],
+    componentKey: 1,
+    flg: false,
   }),
   methods: {
-    /*forceRerender() {
+    forceRerender() {
       this.componentKey += 1;
-    },*/
+    },
+    getKey(id) {
+      return (id + this.componentKey);
+    },
 /////////////////////////////////////////////////////////////////////////Clean///////////////////
     cleanSaved() {
       this.updateContacts();
       this.updateSaved();
       this.cleanUndo();
+      localStorage.removeItem('index');
+    },
+    updateContacts() {
+      this.defFieldsMutation(this.firstName, this.lastName, this.secondName, this.telNumber);
+      this.$store.commit('updateContacts', this.savedMassiveOfValues);
+      this.isEmpty = false;
     },
     updateSaved() {
       this.savedMassiveOfValues = {};
-    },
-    updateContacts() {
-      this.$store.commit('updateContacts');
-      Object.assign(this.contacts[this.index].massiveOfValues,
-          this.savedMassiveOfValues);
-    },
-    getFullName() {
-      return `${this.contacts[this.index].firstName}
-              ${this.contacts[this.index].lastName}
-              ${this.contacts[this.index].secondName}`;
     },
 /////////////////////////////////////////////////////////////////////////Undo///////////////////
     updateUndo(str){
       switch (str) {
         case 'wasAdded':
-          this.undo.push('wasAdded');
+          this.undo.push(str);
           break;
         case 'wasDeleted':
-          this.undo.push('wasDeleted');
+          this.undo.push(str);
           break;
         case 'wasChanged':
-          this.undo.push('wasChanged');
+          this.undo.push(str);
+          break;
+        case 'wasChangedDef':
+          this.undo.push(str);
           break;
       }
     },
@@ -129,6 +151,10 @@ export default {
           this.undo.splice(this.searchLastIndex(this.undo), 1);
           this.goBackChe();
           break;
+        case 'wasChangedDef':
+          this.undo.splice(this.searchLastIndex(this.undo), 1);
+          this.goBackCheDef();
+          break;
       }
     },
     goBackAdd() {
@@ -137,6 +163,8 @@ export default {
       this.addedKeyValue.splice(this.searchLastIndex(this.addedKeyValue), 1);
       this.cleanForOptimize();
       this.unShowUndo();
+      this.getIsEmpty();
+      this.forceRerender();
     },
     goBackDel() {
       this.getAllIndexes(this.deletedKeyValue[this.searchLastIndex(this.deletedKeyValue)]);
@@ -144,15 +172,37 @@ export default {
       this.deletedKeyValue.splice(this.searchLastIndex(this.deletedKeyValue), 1);
       this.cleanForOptimize();
       this.unShowUndo();
+      this.getIsEmpty();
+      this.forceRerender();
     },
     goBackChe() {
       this.getAllIndexes(this.changedKeyValue[this.searchLastIndex(this.changedKeyValue)]);
+      let obj = this.ObjMutation(this.forOptimize[2]);
       this.savedMassiveOfValues[this.forOptimize[0]] = this.savedMassiveOfValues[this.forOptimize[2]];
       delete (this.savedMassiveOfValues)[this.forOptimize[2]];
       this.savedMassiveOfValues[this.forOptimize[0]] = this.forOptimize[1];
+      Object.assign(this.savedMassiveOfValues, obj);
       this.changedKeyValue.splice(this.searchLastIndex(this.changedKeyValue), 1);
       this.cleanForOptimize();
       this.unShowUndo();
+      this.forceRerender();
+    },
+    goBackCheDef() {
+      this.getAllIndexes(this.changedDefKeyValue[this.searchLastIndex(this.changedDefKeyValue)]);
+      this.firstName = this.forOptimize[0];
+      this.lastName = this.forOptimize[1];
+      this.secondName = this.forOptimize[2];
+      this.telNumber = this.forOptimize[3];
+      this.defFieldsMutation(this.forOptimize[0],
+                            this.forOptimize[1],
+                            this.forOptimize[2],
+                            this.forOptimize[3]);
+      this.changedDefKeyValue.splice(this.searchLastIndex(this.changedDefKeyValue), 1);
+      this.cleanForOptimize();
+      this.unShowUndo();
+      this.getName;
+      this.getLastname;
+      this.getSecondname;
     },
     searchLastIndex(array) {
       return array.lastIndexOf(array[array.length - 1]);
@@ -180,12 +230,14 @@ export default {
       this.wannaShow = true;
     },
     addField(key, value) {
-      (this.savedMassiveOfValues)[key] = value;
+      this.savedMassiveOfValues[key] = value;
       this.unShowModal();
       this.showCancele = true;
       this.showUndo = true;
       this.updateUndo('wasAdded');
       this.addedKeyValue.push([key, value]);
+      this.isEmpty = false;
+      this.forceRerender();
     },
 /////////////////////////////////////////////////////////////////////////Del///////////////////
     showDellModal(newKey) {
@@ -201,24 +253,39 @@ export default {
       this.showCancele = true;
       this.showUndo = true;
       this.updateUndo('wasDeleted');
+      this.getIsEmpty();
+      this.forceRerender();
     },
 /////////////////////////////////////////////////////////////////////////Redecting///////////////////
     done(key, value, old_key, old_value) {
       this.changedKeyValue.push([old_key, old_value, key, value]);
-      (this.savedMassiveOfValues)[key] = (this.savedMassiveOfValues)[old_key];
-      delete (this.savedMassiveOfValues)[old_key];
-      (this.savedMassiveOfValues)[key] = value;
-      //Object.defineProperty(this.allContacts[this.getIndex].massiveOfValues, key,
-      //    Object.getOwnPropertyDescriptor(this.allContacts[this.getIndex].massiveOfValues, old_key));
-      //delete (this.allContacts[this.getIndex].massiveOfValues)[old_key];
+      let obj = this.ObjMutation(old_key);
+      this.savedMassiveOfValues[key] = this.savedMassiveOfValues[old_key];
+      delete this.savedMassiveOfValues[old_key];
+      this.savedMassiveOfValues[key] = value;
+      Object.assign(this.savedMassiveOfValues, obj);
 
       this.showCancele = true;
       this.showUndo = true;
-
       this.updateUndo('wasChanged');
+      this.forceRerender();
+    },
+/////////////////////////////////////////////////////////////////////////Redecting Def///////////////////
+    go(value1, value2, value3, value4, value11, value22, value33, value44) {
+      this.changedDefKeyValue.push([value11, value22, value33, value44]);
 
-      console.log(key, value, old_key, old_value);
-      console.log(this.savedMassiveOfValues);
+      this.firstName = value1;
+      this.lastName = value2;
+      this.secondName = value3;
+      this.telNumber = value4;
+      this.defFieldsMutation(value1, value2, value3, value4);
+
+      this.showCancele = true;
+      this.showUndo = true;
+      this.updateUndo('wasChangedDef');
+      this.getName;
+      this.getLastname;
+      this.getSecondname;
     },
 /////////////////////////////////////////////////////////////////////////CanceleAll///////////////////
     showCanceleModal() {
@@ -229,6 +296,7 @@ export default {
       this.updateSaved();
       Object.assign(this.savedMassiveOfValues,
                     this.contacts[this.index].massiveOfValues);
+      this.defFieldsMutation(this.defArray[0], this.defArray[1], this.defArray[2], this.defArray[3]);
       this.showCancele = false;
       this.showUndo = false;
       this.unShowModal();
@@ -236,18 +304,69 @@ export default {
       this.addedKeyValue = [];
       this.deletedKeyValue = [];
       this.changedKeyValue = [];
+      this.getIsEmpty();
     },
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     unShowModal() {
       this.wannaShow = false;
     },
+    getIsEmpty() {
+      this.isEmpty = Object.keys(this.savedMassiveOfValues).length === 0;
+    },
+    defFieldsMutation(value1, value2, value3, value4) {
+      let array = [];
+      array[0] = value1;
+      array[1] = value2;
+      array[2] = value3;
+      array[3] = value4;
+      this.$store.commit('updateContactsDef', array);
+    },
+    ObjMutation(old_key) {
+      let obj = {};
+      let flag = false
+      for(let element in this.savedMassiveOfValues) {
+        if (flag) {
+          obj[element] = this.savedMassiveOfValues[element];
+          delete this.savedMassiveOfValues[element];
+        }
+        if (this.savedMassiveOfValues[element] === this.savedMassiveOfValues[old_key]) {
+          flag = true;
+        }
+      }
+      return obj;
+    },
   },
   computed: {
     CloneMassiveOfValues() {
-      this.savedMassiveOfValues = {};
-      Object.assign(this.savedMassiveOfValues,
-                    this.contacts[this.index].massiveOfValues);
+      if (!this.flg) {
+        this.updateSaved();
+        Object.assign(this.savedMassiveOfValues,
+            this.contacts[this.index].massiveOfValues);
+        this.getIsEmpty();
+        this.defArray.push(this.firstName = this.contacts[this.index].firstName);
+        this.defArray.push(this.lastName = this.contacts[this.index].lastName);
+        this.defArray.push(this.secondName = this.contacts[this.index].secondName);
+        this.defArray.push(this.telNumber = this.contacts[this.index].telNumber);
+        this.flg = true;
+      }
       return '';
+    },
+    getName() {
+      return `${this.contacts[this.index].firstName}`;
+    },
+    getLastname() {
+      if (this.contacts[this.index].lastName !== undefined) {
+        return `${this.contacts[this.index].lastName}`;
+      } else {
+        return '';
+      }
+    },
+    getSecondname() {
+      if (this.contacts[this.index].secondName !== undefined) {
+        return `${this.contacts[this.index].secondName}`;
+      } else {
+        return '';
+      }
     },
     ...mapState(['contacts', 'index'])
   }
@@ -267,9 +386,8 @@ export default {
     align-items: center;
   }
 
-  h3 {
-    /*flex-basis: auto;
-    flex-grow: 1;*/
+  .forMargin1 {
+    margin: 0 35% 0 0;
   }
 
   ul {
@@ -286,5 +404,9 @@ export default {
     max-height: 30px;
     margin: 0;
     padding: 5px;
+  }
+
+  .forMargin {
+    margin: 0 510px 0 0;
   }
 </style>

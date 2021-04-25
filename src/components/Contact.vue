@@ -1,7 +1,7 @@
 <template>
   <li>
     <div class="into">{{ getFullName() }}</div>
-    <div @click="newIndex()">
+    <div @mousedown="newIndex()">
       <router-link
         class="into"
         to="/contact"
@@ -34,20 +34,16 @@ export default {
     }
   },
   methods: {
-    /*getFullName(contact) {
-      return `${contact.firstName}
-              ${contact.lastName}
-              ${contact.secondName}`;
-    }*/
     getFullName() {
-      return `${this.firstName}
-              ${this.lastName}
+      return `${this.lastName}
+              ${this.firstName}
               ${this.secondName}`;
     },
     showDelModal() {
       this.$emit('showDelModal', this.i);
     },
     newIndex() {
+      localStorage.setItem('index', '1');
       this.$store.commit('updateIndex', this.i);
     }
   },

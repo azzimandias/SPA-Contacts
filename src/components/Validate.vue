@@ -69,6 +69,7 @@ export default {
           lastName: undefined,
           secondName: undefined,
           telNumber: this.newTel,
+          massiveOfValues: {}
         };
         this.newName = '';
         this.newTel = '';
@@ -79,7 +80,9 @@ export default {
       this.$emit('removeContact');
     },
     addField() {
-      this.$emit('addField', this.newKey, this.newValue);
+      if (this.newKey && this.newValue) {
+        this.$emit('addField', this.newKey, this.newValue);
+      }
     },
     removeFild() {
       this.$emit('removeFild');

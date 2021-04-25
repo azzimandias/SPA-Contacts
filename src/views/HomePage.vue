@@ -14,7 +14,7 @@
     </ul>
     <p v-else>Здесь пусто</p>
     <button @click="showAddModal()">➕</button>
-    <RemoveValidate
+    <Validate
         v-if="wannaShow"
         :modalName="modalName"
         :delitedContactName="delitedContactName"
@@ -29,7 +29,7 @@
 import ContactPage from './ContactPage';
 import Contact from '../components/Contact';
 import AddContact from '../components/AddContact';
-import RemoveValidate from '../components/RemoveValidate';
+import Validate from '../components/Validate';
 
 import { mapState } from 'vuex';
 
@@ -39,7 +39,7 @@ export default {
     ContactPage,
     Contact,
     AddContact,
-    RemoveValidate
+    Validate
   },
   data: () => ({
     newName: '',
@@ -51,9 +51,6 @@ export default {
   }),
   methods: {
     addContact(newContact) {
-      //
-      //this.$store.commit('updateSaved')
-      //
       this.unShowModal();
       this.contacts.push(newContact);
       this.isEmpty = false;
@@ -85,8 +82,5 @@ export default {
 </script>
 
 <style>
-  /*li {
-    display: flex;
-    justify-content: space-between;
-  }*/
+
 </style>

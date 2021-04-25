@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  props: ['val', 'newKeyValue'],
+  props: ['val', 'newKeyValue', 'i'],
   data: () => ({
     old_key: '',
     old_value: '',
@@ -35,7 +35,6 @@ export default {
       this.$emit('showDellModal', this.val[0]);
     },
     done() {
-      console.log('Enter')
       this.$emit('done', this.val[0], this.val[1], this.old_key, this.old_value);
       this.old_key = '';
       this.old_value = '';

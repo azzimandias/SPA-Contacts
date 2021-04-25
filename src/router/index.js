@@ -15,11 +15,11 @@ const routes = [
     component: () => import('../views/ContactPage.vue'),
     props: true,
     beforeEnter: (to, from, next) => {
-      /*if (localStorage.getItem('index')) {
+      if (localStorage.getItem('index')) {
         next();
       } else {
         next({name: 'HomePage'});
-      }*/
+      }
       next();
     }
   },
