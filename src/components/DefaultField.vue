@@ -2,88 +2,77 @@
   <ul>
     {{ pup }}
     <li>
-    Имя:<input
-        class="forMargin"
-        v-model.lazy="fn"
-        @mouseup="saving(fn, ln, sn, tel)"
-        @change="go()"
-    />
+      <label>Имя:
+        <input
+          class="forMargin"
+          v-model="propFullName[0]"
+          @click="saving(propFullName)"
+          @change="go()"
+        />
+      </label>
     </li>
     <li>
-      Фамилия:<input
-        class="forMargin"
-        v-model.lazy="ln"
-        @mouseup="saving(fn, ln, sn, tel)"
-        @change="go()"
-    />
+      <label>Фамилия:
+        <input
+          class="forMargin"
+          v-model.lazy="propFullName[1]"
+          @click="saving(propFullName)"
+          @change="go()"
+        />
+      </label>
     </li>
     <li>
-      Отчество:<input
-        class="forMargin"
-        v-model.lazy="sn"
-        @mouseup="saving(fn, ln, sn, tel)"
-        @change="go()"
-    />
+      <label>Отчество:
+        <input
+          class="forMargin"
+          v-model.lazy="propFullName[2]"
+          @click="saving(propFullName)"
+          @change="go()"
+        />
+      </label>
     </li>
     <li>
-      Номер телефона:<input
-        class="forMargin"
-        v-model.lazy="tel"
-        @mouseup="saving(fn, ln, sn, tel)"
-        @change="go()"
-    />
+      <label>Номер телефона:
+        <input
+          class="forMargin"
+          v-model.lazy="propFullName[3]"
+          @click="saving(propFullName)"
+          @change="go()"
+        />
+      </label>
     </li>
   </ul>
 </template>
 
 <script>
 export default {
-  props: ['firstName', 'lastName', 'secondName', 'telNumber'],
-  data: () => ({
-    fn: '',
-    ln: '',
-    sn: '',
-    tel: 0,
-    old_name: '',
-    old_lname: '',
-    old_sname: '',
-    old_tel: '',
-    flag: true
-  }),
+  props: ['propFullName'],
+  data() {
+    return {
+      fullName: [],
+      oldFullName: [],
+      flag: true,
+    }
+  },
   methods: {
-    saving(name, lname, sname, tel) {
+    saving(fullName) {
       if (this.flag) {
-        this.old_name = name;
-        this.old_lname = lname;
-        this.old_sname = sname;
-        this.old_tel = tel;
+        for (let i = 0; i < fullName.length; i++) {
+          this.oldFullName[i] = fullName[i];
+        }
         this.flag = false;
       }
     },
     go() {
-      this.$emit('go',
-                  this.fn,
-                  this.ln,
-                  this.sn,
-                  this.tel,
-                  this.old_name,
-                  this.old_lname,
-                  this.old_sname,
-                  this.old_tel);
-      this.old_name = '';
-      this.old_lname = '';
-      this.old_sname = '';
-      this.old_tel = '';
+      this.$emit('go', this.propFullName, this.oldFullName);
+      this.oldFullName = [];
       this.flag = true;
       this.pup;
     }
   },
   computed: {
     pup() {
-      this.fn = this.firstName;
-      this.ln = this.lastName;
-      this.sn = this.secondName;
-      this.tel = this.telNumber;
+      this.fullName = this.propFullName;
       return '';
     }
   }

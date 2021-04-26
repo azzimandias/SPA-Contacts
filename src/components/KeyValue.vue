@@ -1,19 +1,19 @@
 <template>
   <li>
-    <div class="inputs">
+    <label class="inputs">
       <input
           type="text"
           v-model.lazy="val[0]"
-          @mousedown="save(val[0], val[1])"
+          @mouseup="save(val)"
           @change="done"
       /> :
       <input
           type="text"
           v-model.lazy="val[1]"
-          @mousedown="save(val[0], val[1])"
+          @mouseup="save(val)"
           @change="done"
       />
-    </div>
+    </label>
 
     <button
         class="into1"
@@ -24,26 +24,32 @@
 
 <script>
 export default {
-  props: ['val', 'newKeyValue', 'i'],
-  data: () => ({
-    old_key: '',
-    old_value: '',
-    flag: true
-  }),
+  props: ['val'],
+  data() {
+    return {
+      keysValues: [],
+      flag: true
+    }
+  },
   methods: {
     showDellModal() {
       this.$emit('showDellModal', this.val[0]);
     },
     done() {
-      this.$emit('done', this.val[0], this.val[1], this.old_key, this.old_value);
-      this.old_key = '';
-      this.old_value = '';
+      setTimeout(this.done1(), 1000);
+
+    },
+    done1() {
+      this.keysValues[2] = this.val[0];
+      this.keysValues[3] = this.val[1];
+      this.$emit('done', this.keysValues);
+      this.keysValues = [];
       this.flag = true;
     },
-    save(key, value) {
+    save(val) {
       if (this.flag) {
-        this.old_key = key;
-        this.old_value = value;
+        this.keysValues[0] = val[0];
+        this.keysValues[1] = val[1];
         this.flag = false;
       }
     }

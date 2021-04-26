@@ -2,17 +2,20 @@
   <div>
 
     <div v-if="modalName === 'AddOnFirstPage'">
+
       <h4>Добавать новый контакт:</h4>
-      <input
-          type="text"
-          placeholder="Имя"
-          v-model="newName"
-      />
-      <input
-          type="text"
-          placeholder="Номер телефона"
-          v-model="newTel"
-      />
+      <label>
+        <input
+            type="text"
+            placeholder="Имя"
+            v-model="values[0]"
+        />
+        <input
+            type="text"
+            placeholder="Номер телефона"
+            v-model="values[1]"
+        />
+      </label>
       <button @click="addContact()">Добавить</button>
       <button @click="unShowModal()">Отмена</button>
     </div>
@@ -24,22 +27,24 @@
     </div>
 
     <div v-else-if="modalName === 'AddOnSecondPage'">
-      <input
-          type="text"
-          placeholder="Ключ"
-          v-model="newKey"
-      />
-      <input
-          type="text"
-          placeholder="Значение"
-          v-model="newValue"
-      />
+      <label>
+        <input
+            type="text"
+            placeholder="Ключ"
+            v-model="values[0]"
+        />
+        <input
+            type="text"
+            placeholder="Значение"
+            v-model="values[1]"
+        />
+      </label>
       <button @click="addField()">Добавить</button>
       <button @click="unShowModal()">Отмена</button>
     </div>
 
     <div v-else-if="modalName === 'DelOnSecondPage'">
-      <h4>Вы уверены, что хотите удалить поле {{ delitedFieldName }}?</h4>
+      <h4>Вы уверены, что хотите удалить поле {{ deletedFieldName }}?</h4>
       <button @click="removeFild()">Да</button>
       <button @click="unShowModal()">Нет</button>
     </div>
@@ -54,25 +59,23 @@
 
 <script>
 export default {
-  props: ['delitedContactName', 'delitedFieldName', 'modalName'],
-  data: () => ({
-    newName: '',
-    newTel: '',
-    newKey: '',
-    newValue: ''
-  }),
+  props: ['deletedFieldName', 'modalName'],
+  data() {
+    return {
+      values: []
+    }
+  },
   methods: {
     addContact() {
-      if (this.newName && this.newTel) {
+      if (this.values[0] && this.values[1]) {
         const newContact = {
-          firstName: this.newName,
+          firstName: this.values[0],
           lastName: undefined,
           secondName: undefined,
-          telNumber: this.newTel,
+          telNumber: this.values[1],
           massiveOfValues: {}
         };
-        this.newName = '';
-        this.newTel = '';
+        this.values = [];
         this.$emit('addContact', newContact);
       }
     },
@@ -80,8 +83,9 @@ export default {
       this.$emit('removeContact');
     },
     addField() {
-      if (this.newKey && this.newValue) {
-        this.$emit('addField', this.newKey, this.newValue);
+      if (this.values[0] && this.values[1]) {
+        this.$emit('addField', this.values[0], this.values[1]);
+        this.values = [];
       }
     },
     removeFild() {

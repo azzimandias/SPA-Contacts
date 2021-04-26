@@ -11,47 +11,40 @@
     <div class="controls">
       <button
           v-show="showUndo"
-          @click="undoOneThing()"
+          @mousedown="undoOneThing()"
       >↩Undo</button>
+      {{ unShowUndo() }}
       <h3>Контактная информация</h3>
       <button @click="showAddModal()">➕</button>
     </div>
-
       <DefaultField
-          :firstName="this.firstName"
-          :lastName="this.lastName"
-          :secondName="this.secondName"
-          :telNumber="this.telNumber"
+          :propFullName="fullName"
           @go="go"
+          :key="defaultFieldKey"
       />
-
     <hr/>
-
     <ul v-if="!isEmpty">
       <KeyValue
           v-for="(val, i) in Object.entries(savedMassiveOfValues)"
           :key="getKey(i)"
           :val="val"
-          :newKeyValue="newKeyValue"
           @done="done"
           @showDellModal="showDellModal"
           @showCanceleModal="showCanceleModal()"
       />
     </ul>
     <p v-else>Здесь пусто</p>
-
     <div>
       <button
           v-if="showCancele"
           @click="showCanceleModal()"
       >Отменить все изменения</button>
     </div>
-
     <div class="remove-window">
       <Validate
           v-if="wannaShow"
           :modalName="modalName"
-          :delitedFieldName="delitedFieldName"
+          :deletedFieldName="deletedFieldName"
           @addField="addField"
           @removeFild="removeFild()"
           @canceleAll="canceleAll()"
@@ -74,36 +67,34 @@ export default {
     KeyValue,
     DefaultField
   },
-  data: () => ({
-    newName: '',
-    isEmpty: false,
-    wannaShow: false,
-    modalName: '',
-    delitedFieldName: '',
-    newKeyValue: '',
-    showUndo: false,
-    showCancele: false,
-    savedMassiveOfValues: {},
-    undo: [],
-    addedKeyValue: [],
-    deletedKeyValue: [],
-    changedKeyValue: [],
-    changedDefKeyValue: [],
-    forOptimize: [],
-    firstName: '',
-    lastName: '',
-    secondName: '',
-    telNumber: 0,
-    defArray: [],
-    componentKey: 1,
-    flg: false,
-  }),
+  data() {
+    return {
+      isEmpty: false,
+      flag: false,
+      wannaShow: false,
+      showUndo: false,
+      showCancele: false,
+      modalName: '',
+      deletedFieldName: '',
+      savedMassiveOfValues: {},
+      undo: [],
+      whatsUndo: [[], [], [], []],
+      forOptimize: [],
+      fullName: [],
+      defArray: [],
+      KeyValueKey: 0,
+      defaultFieldKey: 0,
+    }
+  },
   methods: {
-    forceRerender() {
-      this.componentKey += 1;
+    forceRerenderKeyValue() {
+      this.KeyValueKey += 1;
+    },
+    forceRerenderDefaultField() {
+      this.defaultFieldKey += 1;
     },
     getKey(id) {
-      return (id + this.componentKey);
+      return (id + this.KeyValueKey);
     },
 /////////////////////////////////////////////////////////////////////////Clean///////////////////
     cleanSaved() {
@@ -113,7 +104,7 @@ export default {
       localStorage.removeItem('index');
     },
     updateContacts() {
-      this.defFieldsMutation(this.firstName, this.lastName, this.secondName, this.telNumber);
+      this.defFieldsMutation(this.fullName);
       this.$store.commit('updateContacts', this.savedMassiveOfValues);
       this.isEmpty = false;
     },
@@ -121,85 +112,60 @@ export default {
       this.savedMassiveOfValues = {};
     },
 /////////////////////////////////////////////////////////////////////////Undo///////////////////
-    updateUndo(str){
-      switch (str) {
-        case 'wasAdded':
-          this.undo.push(str);
-          break;
-        case 'wasDeleted':
-          this.undo.push(str);
-          break;
-        case 'wasChanged':
-          this.undo.push(str);
-          break;
-        case 'wasChangedDef':
-          this.undo.push(str);
-          break;
-      }
-    },
     undoOneThing() {
       switch (this.undo[this.undo.length - 1]) {
         case 'wasAdded':
-          this.undo.splice(this.searchLastIndex(this.undo), 1);
           this.goBackAdd();
           break;
         case'wasDeleted':
-          this.undo.splice(this.searchLastIndex(this.undo), 1);
           this.goBackDel();
           break;
         case 'wasChanged':
-          this.undo.splice(this.searchLastIndex(this.undo), 1);
           this.goBackChe();
           break;
         case 'wasChangedDef':
-          this.undo.splice(this.searchLastIndex(this.undo), 1);
           this.goBackCheDef();
           break;
       }
+      this.undo.splice(this.searchLastIndex(this.undo), 1);
     },
     goBackAdd() {
-      this.getAllIndexes(this.addedKeyValue[this.searchLastIndex(this.addedKeyValue)]);
+      this.getAllIndexes(this.whatsUndo[0][this.searchLastIndex(this.whatsUndo[0])]);
       delete this.savedMassiveOfValues[this.forOptimize[0]];
-      this.addedKeyValue.splice(this.searchLastIndex(this.addedKeyValue), 1);
+      this.whatsUndo[0].splice(this.searchLastIndex(this.whatsUndo[0]), 1);
       this.cleanForOptimize();
-      this.unShowUndo();
       this.getIsEmpty();
-      this.forceRerender();
+      this.forceRerenderKeyValue();
     },
     goBackDel() {
-      this.getAllIndexes(this.deletedKeyValue[this.searchLastIndex(this.deletedKeyValue)]);
+      this.getAllIndexes(this.whatsUndo[1][this.searchLastIndex(this.whatsUndo[1])]);
+      let obj = this.ObjMutation(this.forOptimize[2]);
       this.savedMassiveOfValues[this.forOptimize[0]] = this.forOptimize[1];
-      this.deletedKeyValue.splice(this.searchLastIndex(this.deletedKeyValue), 1);
+      Object.assign(this.savedMassiveOfValues, obj);
+      this.whatsUndo[1].splice(this.searchLastIndex(this.whatsUndo[1]), 1);
+
       this.cleanForOptimize();
-      this.unShowUndo();
       this.getIsEmpty();
-      this.forceRerender();
+      this.forceRerenderKeyValue();
     },
     goBackChe() {
-      this.getAllIndexes(this.changedKeyValue[this.searchLastIndex(this.changedKeyValue)]);
+      this.getAllIndexes(this.whatsUndo[2][this.searchLastIndex(this.whatsUndo[2])]);
       let obj = this.ObjMutation(this.forOptimize[2]);
       this.savedMassiveOfValues[this.forOptimize[0]] = this.savedMassiveOfValues[this.forOptimize[2]];
       delete (this.savedMassiveOfValues)[this.forOptimize[2]];
       this.savedMassiveOfValues[this.forOptimize[0]] = this.forOptimize[1];
       Object.assign(this.savedMassiveOfValues, obj);
-      this.changedKeyValue.splice(this.searchLastIndex(this.changedKeyValue), 1);
+      this.whatsUndo[2].splice(this.searchLastIndex(this.whatsUndo[2]), 1);
       this.cleanForOptimize();
-      this.unShowUndo();
-      this.forceRerender();
+      this.forceRerenderKeyValue();
     },
     goBackCheDef() {
-      this.getAllIndexes(this.changedDefKeyValue[this.searchLastIndex(this.changedDefKeyValue)]);
-      this.firstName = this.forOptimize[0];
-      this.lastName = this.forOptimize[1];
-      this.secondName = this.forOptimize[2];
-      this.telNumber = this.forOptimize[3];
-      this.defFieldsMutation(this.forOptimize[0],
-                            this.forOptimize[1],
-                            this.forOptimize[2],
-                            this.forOptimize[3]);
-      this.changedDefKeyValue.splice(this.searchLastIndex(this.changedDefKeyValue), 1);
+      this.getAllIndexes(this.whatsUndo[3][this.searchLastIndex(this.whatsUndo[3])]);
+      this.defFieldsMutation(this.forOptimize);
+      this.updateFullName;
+      this.forceRerenderDefaultField();
+      this.whatsUndo[3].splice(this.searchLastIndex(this.whatsUndo[3]), 1);
       this.cleanForOptimize();
-      this.unShowUndo();
       this.getName;
       this.getLastname;
       this.getSecondname;
@@ -234,55 +200,65 @@ export default {
       this.unShowModal();
       this.showCancele = true;
       this.showUndo = true;
-      this.updateUndo('wasAdded');
-      this.addedKeyValue.push([key, value]);
+      this.undo.push('wasAdded');
+      this.whatsUndo[0].push([key, value]);
       this.isEmpty = false;
-      this.forceRerender();
     },
 /////////////////////////////////////////////////////////////////////////Del///////////////////
     showDellModal(newKey) {
       this.modalName = 'DelOnSecondPage';
-      this.delitedFieldName = newKey;
+      this.deletedFieldName = newKey;
       this.wannaShow = true;
     },
     removeFild() {
-      this.deletedKeyValue.push([this.delitedFieldName,
-                                this.savedMassiveOfValues[this.delitedFieldName]]);
-      delete (this.savedMassiveOfValues)[this.delitedFieldName];
+      let key = Object.keys(this.savedMassiveOfValues);
+      for (let element of key) {
+        if (element === this.deletedFieldName) {
+          break;
+        }
+        key = element;
+      }
+      if (typeof key !== 'string') {
+        key = 0;
+      }
+      this.whatsUndo[1].push([this.deletedFieldName,
+                                this.savedMassiveOfValues[this.deletedFieldName],
+                                key]);
+      delete (this.savedMassiveOfValues)[this.deletedFieldName];
       this.unShowModal();
       this.showCancele = true;
       this.showUndo = true;
-      this.updateUndo('wasDeleted');
+      this.undo.push('wasDeleted');
       this.getIsEmpty();
-      this.forceRerender();
     },
-/////////////////////////////////////////////////////////////////////////Redecting///////////////////
-    done(key, value, old_key, old_value) {
-      this.changedKeyValue.push([old_key, old_value, key, value]);
-      let obj = this.ObjMutation(old_key);
-      this.savedMassiveOfValues[key] = this.savedMassiveOfValues[old_key];
-      delete this.savedMassiveOfValues[old_key];
-      this.savedMassiveOfValues[key] = value;
-      Object.assign(this.savedMassiveOfValues, obj);
+/////////////////////////////////////////////////////////////////////////redaction///////////////////
+    done(keysValues) {
+      this.whatsUndo[2].push(keysValues);
+
+      if (keysValues[0] === keysValues[2]) {
+        this.savedMassiveOfValues[keysValues[0]] = keysValues[3];
+      }
+      if (keysValues[0] !== keysValues[2]) {
+        let obj = this.ObjMutation(keysValues[0]);
+        Object.defineProperty(this.savedMassiveOfValues, keysValues[2],
+            Object.getOwnPropertyDescriptor(this.savedMassiveOfValues, keysValues[0]));
+        delete this.savedMassiveOfValues[keysValues[0]];
+        Object.assign(this.savedMassiveOfValues, obj);
+      }
 
       this.showCancele = true;
       this.showUndo = true;
-      this.updateUndo('wasChanged');
-      this.forceRerender();
+      this.undo.push('wasChanged');
     },
-/////////////////////////////////////////////////////////////////////////Redecting Def///////////////////
-    go(value1, value2, value3, value4, value11, value22, value33, value44) {
-      this.changedDefKeyValue.push([value11, value22, value33, value44]);
-
-      this.firstName = value1;
-      this.lastName = value2;
-      this.secondName = value3;
-      this.telNumber = value4;
-      this.defFieldsMutation(value1, value2, value3, value4);
+/////////////////////////////////////////////////////////////////////////redaction Def///////////////////
+    go(fullName, oldFullName) {
+      this.whatsUndo[3].push(oldFullName);
+      this.fullName = fullName;
+      this.defFieldsMutation(fullName);
 
       this.showCancele = true;
       this.showUndo = true;
-      this.updateUndo('wasChangedDef');
+      this.undo.push('wasChangedDef');
       this.getName;
       this.getLastname;
       this.getSecondname;
@@ -296,14 +272,12 @@ export default {
       this.updateSaved();
       Object.assign(this.savedMassiveOfValues,
                     this.contacts[this.index].massiveOfValues);
-      this.defFieldsMutation(this.defArray[0], this.defArray[1], this.defArray[2], this.defArray[3]);
+      this.defFieldsMutation(this.defArray);
       this.showCancele = false;
       this.showUndo = false;
       this.unShowModal();
       this.cleanUndo();
-      this.addedKeyValue = [];
-      this.deletedKeyValue = [];
-      this.changedKeyValue = [];
+      this.whatsUndo = [[], [], [], []];
       this.getIsEmpty();
     },
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -313,24 +287,24 @@ export default {
     getIsEmpty() {
       this.isEmpty = Object.keys(this.savedMassiveOfValues).length === 0;
     },
-    defFieldsMutation(value1, value2, value3, value4) {
-      let array = [];
-      array[0] = value1;
-      array[1] = value2;
-      array[2] = value3;
-      array[3] = value4;
-      this.$store.commit('updateContactsDef', array);
+    defFieldsMutation(fullName) {
+      this.$store.commit('updateContactsDef', fullName);
     },
     ObjMutation(old_key) {
       let obj = {};
       let flag = false
-      for(let element in this.savedMassiveOfValues) {
-        if (flag) {
-          obj[element] = this.savedMassiveOfValues[element];
-          delete this.savedMassiveOfValues[element];
-        }
-        if (this.savedMassiveOfValues[element] === this.savedMassiveOfValues[old_key]) {
-          flag = true;
+      if (old_key === 0) {
+        obj = this.savedMassiveOfValues;
+        this.savedMassiveOfValues = {};
+      } else {
+        for (let element in this.savedMassiveOfValues) {
+          if (flag) {
+            obj[element] = this.savedMassiveOfValues[element];
+            delete this.savedMassiveOfValues[element];
+          }
+          if (this.savedMassiveOfValues[element] === this.savedMassiveOfValues[old_key]) {
+            flag = true;
+          }
         }
       }
       return obj;
@@ -338,17 +312,24 @@ export default {
   },
   computed: {
     CloneMassiveOfValues() {
-      if (!this.flg) {
+      if (!this.flag) {
         this.updateSaved();
         Object.assign(this.savedMassiveOfValues,
             this.contacts[this.index].massiveOfValues);
         this.getIsEmpty();
-        this.defArray.push(this.firstName = this.contacts[this.index].firstName);
-        this.defArray.push(this.lastName = this.contacts[this.index].lastName);
-        this.defArray.push(this.secondName = this.contacts[this.index].secondName);
-        this.defArray.push(this.telNumber = this.contacts[this.index].telNumber);
-        this.flg = true;
+        this.defArray.push(this.fullName[0] = this.contacts[this.index].firstName);
+        this.defArray.push(this.fullName[1] = this.contacts[this.index].lastName);
+        this.defArray.push(this.fullName[2] = this.contacts[this.index].secondName);
+        this.defArray.push(this.fullName[3] = this.contacts[this.index].telNumber);
+        this.flag = true;
       }
+      return '';
+    },
+    updateFullName() {
+      this.fullName[0] = this.contacts[this.index].firstName;
+      this.fullName[1] = this.contacts[this.index].lastName;
+      this.fullName[2] = this.contacts[this.index].secondName;
+      this.fullName[3] = this.contacts[this.index].telNumber;
       return '';
     },
     getName() {
@@ -406,7 +387,14 @@ export default {
     padding: 5px;
   }
 
-  .forMargin {
+  /*.forMargin {
     margin: 0 510px 0 0;
+  }*/
+
+  label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
   }
 </style>

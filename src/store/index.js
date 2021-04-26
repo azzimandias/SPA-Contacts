@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-//import index from "vuex";
 
 Vue.use(Vuex)
 
@@ -14,7 +13,10 @@ export default new Vuex.Store({
         telNumber: '89118294005',
         massiveOfValues: {
           Email: 'andrew@yandex.ru',
-          Work: 'Junior Frontend Developer'
+          Work: 'Junior Frontend Developer',
+          Hobby: 'Web-develop',
+          Sex: 'Male',
+          Wife: 'Sofya Ogirok',
         }
       },
       {
