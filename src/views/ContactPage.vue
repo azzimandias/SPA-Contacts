@@ -1,56 +1,85 @@
 <template>
-  <div class="ContactPage">
+  <div class="contact-page">
     {{ CloneMassiveOfValues }}
-    <div class="liave-page">
-      <div @click="cleanSaved()">
-        <router-link to="/">⬅</router-link>
+    <div class="nav">
+      <div class="nav__body nav__body_padding">
+        <div class="nav__content">
+          <div class="nav__link"  @click="cleanSaved()">
+            <router-link class="link" title="Контакты" to="/">◀</router-link>
+          </div>
+          <div class="nav__title nav__title_margin" >
+            <div>{{ getLastname }}</div>
+            {{ getName }}
+            {{ getSecondname }}
+          </div>
+          <button
+              class="nav__adder nav__adder_display non-selectable-element"
+              title="Добавить поле"
+              @click="showAddModal()"
+          >➕</button>
+        </div>
       </div>
-      <h2 class="forMargin1" >{{ getLastname }} {{ getName }} {{ getSecondname }}</h2>
     </div>
-    <br>
-    <div class="controls">
-      <button
-          v-show="showUndo"
-          @mousedown="undoOneThing()"
-      >↩Undo</button>
-      {{ unShowUndo() }}
-      <h3>Контактная информация</h3>
-      <button @click="showAddModal()">➕</button>
-    </div>
+    <div class="contact-page-body">
+      <div class="controls">
+        <div class="controls__fake" v-if="!showUndo"></div>
+        <div class="controls__buttons" v-else-if="showUndo">
+          <button
+              class="controls__undo key-style non-selectable-element"
+              title="Отменить последнее изменение"
+              @mousedown="undoOneThing()"
+          >↩</button>
+          {{ unShowUndo() }}
+          <button
+              class="controls__cancale key-style non-selectable-element"
+              title="Отменить все изменения"
+              @click="showCanceleModal()"
+          >🔄</button>
+        </div>
+        <h3 class="controls__title">Контактная информация</h3>
+        <div class="controls__fake">
+          <button
+              class="controls__cancale controls__cancale-1 key-style non-selectable-element"
+              title="Отменить все изменения"
+              @click="showCanceleModal()"
+              v-if="showUndo"
+          >🔄</button>
+          <button
+              class="controls__adder key-style non-selectable-element"
+              title="Добавить поле"
+              @click="showAddModal()"
+          >➕</button>
+        </div>
+      </div>
       <DefaultField
           :propFullName="fullName"
-          @go="go"
           :key="defaultFieldKey"
+          @go="go"
       />
-    <hr/>
-    <ul v-if="!isEmpty">
-      <KeyValue
-          v-for="(val, i) in Object.entries(savedMassiveOfValues)"
-          :key="getKey(i)"
-          :val="val"
-          @done="done"
-          @showDellModal="showDellModal"
-          @showCanceleModal="showCanceleModal()"
-      />
-    </ul>
-    <p v-else>Здесь пусто</p>
-    <div>
-      <button
-          v-if="showCancele"
-          @click="showCanceleModal()"
-      >Отменить все изменения</button>
-    </div>
-    <div class="remove-window">
-      <Validate
-          v-if="wannaShow"
-          :modalName="modalName"
-          :deletedFieldName="deletedFieldName"
-          @addField="addField"
-          @removeFild="removeFild()"
-          @canceleAll="canceleAll()"
-          @unShowModal="unShowModal()"
-      />
-    </div>
+      <ul class="fields" v-if="!isEmpty">
+        <KeyValue
+            v-for="(val, i) in Object.entries(savedMassiveOfValues)"
+            :key="getKey(i)"
+            :val="val"
+            @done="done"
+            @showDellModal="showDellModal"
+            @showCanceleModal="showCanceleModal()"
+        />
+      </ul>
+      <p
+          class="empty"
+          v-else
+      >Здесь пусто</p>
+  </div>
+    <Validate
+        v-if="wannaShow"
+        :modalName="modalName"
+        :deletedFieldName="deletedFieldName"
+        @addField="addField"
+        @removeFild="removeFild()"
+        @canceleAll="canceleAll()"
+        @unShowModal="unShowModal()"
+    />
   </div>
 </template>
 
@@ -355,46 +384,84 @@ export default {
 </script>
 
 <style>
-  .liave-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .nav__link {
+    width: 14px;
+    height: 16px;
+  }
+
+  .link {
+    width: 89px;
+    color: #2c3e50;
+    font-weight: bold;
+  }
+
+  .contact-page-body {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 20px;
   }
 
   .controls {
     display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .forMargin1 {
-    margin: 0 35% 0 0;
-  }
-
-  ul {
-    padding: 0 60px;
-  }
-
-  .remove-window {
+    max-width: 700px;
+    height: 60px;
+    margin: 10px auto 50px auto;
 
   }
 
-  button {
-    min-width: 60px;
-    max-width: 200px;
-    max-height: 30px;
-    margin: 0;
-    padding: 5px;
+  .controls__fake {
+    width: 115px;
   }
 
-  /*.forMargin {
-    margin: 0 510px 0 0;
-  }*/
-
-  label {
+  .controls__buttons {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
+  }
+
+  .controls__undo {
+    width: 55px;
+    height: 55px;
+    font-size: 25px;
+    padding: 10px;
+    margin-right: 5px;
+  }
+
+  .controls__undo:active {
+    margin-top: 10px;
+    box-shadow: none;
+  }
+
+  .controls__cancale {
+    width: 55px;
+    height: 55px;
+    font-size: 25px;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .controls__cancale:active {
+    margin-top: 10px;
+    box-shadow: none;
+  }
+
+  .controls__cancale-1 {
+    display: none;
+  }
+
+  .controls__title {
+    flex: 1 0 auto;
+    font-size: 20px;
+    align-self: center;
+  }
+
+  .controls__adder {
+    width: 100%;
+    height: 55px;
+    font-size: 20px;
+    padding: 10px;
+  }
+
+  .controls__adder:active {
+    margin-top: 5px;
+    box-shadow: none;
   }
 </style>

@@ -1,65 +1,78 @@
 <template>
-  <div>
-
-    <div v-if="modalName === 'AddOnFirstPage'">
-
-      <h4>Добавать новый контакт:</h4>
-      <label>
+  <div class="modal">
+    <div class="modal__background" @click="unShowModal()"></div>
+    <div
+        class="modal__body key-style"
+        v-if="modalName === 'AddOnFirstPage'"
+    >
+      <h4 class="modal__tittle">Добавать новый контакт:</h4>
+      <label class="modal__inputs-body">
         <input
+            class="modal__input"
             type="text"
-            placeholder="Имя"
+            placeholder=" Имя"
             v-model="values[0]"
         />
         <input
-            type="text"
-            placeholder="Номер телефона"
+            class="modal__input"
+            type="tel"
+            pattern="2[0-9]{3}-[0-9]{3}"
+            placeholder=" Номер телефона"
             v-model="values[1]"
         />
       </label>
-      <button @click="addContact()">Добавить</button>
-      <button @click="unShowModal()">Отмена</button>
+      <div class="modal__buttons-body">
+        <button class="modal__button non-selectable-element" @click="addContact()">&#9989</button>
+        <button class="modal__button non-selectable-element" @click="unShowModal()">❌</button>
+      </div>
     </div>
-
-    <div v-else-if="modalName === 'DelOnFirstPage'">
-      <h4>Вы уверены, что хотите удалить контакт {{ delitedContactName }}?</h4>
-      <button @click="removeContact()">Да</button>
-      <button @click="unShowModal()">Нет</button>
+    <div class="modal__body key-style" v-else-if="modalName === 'DelOnFirstPage'">
+      <h4 class="modal__tittle">Вы уверены, что хотите удалить контакт {{ deletedContactName }}?</h4>
+      <div class="modal__buttons-body">
+        <button class="modal__button non-selectable-element" @click="removeContact()">&#9989</button>
+        <button class="modal__button non-selectable-element" @click="unShowModal()">❌</button>
+      </div>
     </div>
-
-    <div v-else-if="modalName === 'AddOnSecondPage'">
-      <label>
+    <div class="modal__body key-style" v-else-if="modalName === 'AddOnSecondPage'">
+      <h4 class="modal__tittle">Добавать новое поле:</h4>
+      <label class="modal__inputs-body">
         <input
+            class="modal__input"
             type="text"
             placeholder="Ключ"
             v-model="values[0]"
         />
         <input
-            type="text"
+            class="modal__input"
             placeholder="Значение"
             v-model="values[1]"
         />
       </label>
-      <button @click="addField()">Добавить</button>
-      <button @click="unShowModal()">Отмена</button>
+      <div class="modal__buttons-body">
+        <button class="modal__button non-selectable-element" @click="addField()">&#9989</button>
+        <button class="modal__button non-selectable-element" @click="unShowModal()">❌</button>
+      </div>
     </div>
-
-    <div v-else-if="modalName === 'DelOnSecondPage'">
-      <h4>Вы уверены, что хотите удалить поле {{ deletedFieldName }}?</h4>
-      <button @click="removeFild()">Да</button>
-      <button @click="unShowModal()">Нет</button>
+    <div class="modal__body key-style" v-else-if="modalName === 'DelOnSecondPage'">
+      <h4 class="modal__tittle">Вы уверены, что хотите удалить поле {{ deletedFieldName }}?</h4>
+      <div class="modal__buttons-body">
+        <button class="modal__button non-selectable-element" @click="removeFild()">&#9989</button>
+        <button class="modal__button non-selectable-element" @click="unShowModal()">❌</button>
+      </div>
     </div>
-
-    <div v-else-if="modalName === 'CanOnSecondPage'">
-      <h4>Вы уверены, что хотите отменить последнее изменение?</h4>
-      <button @click="canceleAll()">Да</button>
-      <button @click="unShowModal()">Нет</button>
+    <div class="modal__body key-style" v-else-if="modalName === 'CanOnSecondPage'">
+      <h4 class="modal__tittle">Вы уверены, что хотите отменить все изменения?</h4>
+      <div class="modal__buttons-body">
+        <button class="modal__button non-selectable-element" @click="canceleAll()">&#9989</button>
+        <button class="modal__button non-selectable-element" @click="unShowModal()">❌</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['deletedFieldName', 'modalName'],
+  props: ['deletedContactName', 'deletedFieldName', 'modalName'],
   data() {
     return {
       values: []
@@ -100,3 +113,66 @@ export default {
   }
 }
 </script>
+
+<style>
+  .modal__background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+
+    background-color: rgba(240, 255, 240, 0.7);
+    //transition: all 0.8s ease 0s;
+  }
+
+  .modal__body {
+    position: fixed;
+    top: 20%;
+    left: calc(50% - 250px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 500px;
+    height: 250px;
+    overflow: hidden;
+  }
+
+  .modal__tittle {
+    margin-top: 40px;
+    flex: 0 0 20%;
+    font-size: 25px;
+  }
+
+  .modal__inputs-body {
+    display: flex;
+    justify-content: space-around;
+    flex: 0 0 auto;
+  }
+
+  .modal__input {
+    width: 200px;
+    flex: 0 1 auto;
+
+    font-size: 20px;
+    background-color: inherit;
+    border-bottom: 1px solid black;
+  }
+
+  .modal__buttons-body {
+    display: flex;
+    justify-content: space-around;
+    flex: 0 0 30%;
+  }
+
+  .modal__button {
+    width: 55px;
+    height: 55px;
+    margin: 10px;
+    flex: 0 1 auto;
+    font-size: 35px;
+    background-color: inherit;
+  }
+</style>

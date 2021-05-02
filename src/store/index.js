@@ -20,21 +20,251 @@ export default new Vuex.Store({
         }
       },
       {
-        firstName: 'Сонька',
+        firstName: 'Софья',
         lastName: 'Огирок',
         secondName: 'Дмитриевна',
         telNumber: '89502223344',
         massiveOfValues: {
           Email: 'sonuaNya@yandex.ru',
-          work: 'TeamLead'
+          work: 'TeamLead',
+          Hobby: 'Web-develop',
+          Sex: 'Female',
+          Husband: 'Sharanda Andrew',
         }
       },
       {
-        firstName: 'Дима',
-        lastName: undefined,
-        secondName: undefined,
+        firstName: 'Андрей',
+        lastName: 'Шаранда',
+        secondName: 'Дмитриевич',
+        telNumber: '89118294005',
+        massiveOfValues: {
+          Email: 'andrew@yandex.ru',
+          Work: 'Junior Frontend Developer',
+          Hobby: 'Web-develop',
+          Sex: 'Male',
+          Wife: 'Sofya Ogirok',
+        }
+      },
+      {
+        firstName: 'Софья',
+        lastName: 'Огирок',
+        secondName: 'Дмитриевна',
         telNumber: '89502223344',
-        massiveOfValues: {}
+        massiveOfValues: {
+          Email: 'sonuaNya@yandex.ru',
+          work: 'TeamLead',
+          Hobby: 'Web-develop',
+          Sex: 'Female',
+          Husband: 'Sharanda Andrew',
+        }
+      },
+      {
+        firstName: 'Андрей',
+        lastName: 'Шаранда',
+        secondName: 'Дмитриевич',
+        telNumber: '89118294005',
+        massiveOfValues: {
+          Email: 'andrew@yandex.ru',
+          Work: 'Junior Frontend Developer',
+          Hobby: 'Web-develop',
+          Sex: 'Male',
+          Wife: 'Sofya Ogirok',
+        }
+      },
+      {
+        firstName: 'Софья',
+        lastName: 'Огирок',
+        secondName: 'Дмитриевна',
+        telNumber: '89502223344',
+        massiveOfValues: {
+          Email: 'sonuaNya@yandex.ru',
+          work: 'TeamLead',
+          Hobby: 'Web-develop',
+          Sex: 'Female',
+          Husband: 'Sharanda Andrew',
+        }
+      },
+      {
+        firstName: 'Андрей',
+        lastName: 'Шаранда',
+        secondName: 'Дмитриевич',
+        telNumber: '89118294005',
+        massiveOfValues: {
+          Email: 'andrew@yandex.ru',
+          Work: 'Junior Frontend Developer',
+          Hobby: 'Web-develop',
+          Sex: 'Male',
+          Wife: 'Sofya Ogirok',
+        }
+      },
+      {
+        firstName: 'Софья',
+        lastName: 'Огирок',
+        secondName: 'Дмитриевна',
+        telNumber: '89502223344',
+        massiveOfValues: {
+          Email: 'sonuaNya@yandex.ru',
+          work: 'TeamLead',
+          Hobby: 'Web-develop',
+          Sex: 'Female',
+          Husband: 'Sharanda Andrew',
+        }
+      },
+      {
+        firstName: 'Андрей',
+        lastName: 'Шаранда',
+        secondName: 'Дмитриевич',
+        telNumber: '89118294005',
+        massiveOfValues: {
+          Email: 'andrew@yandex.ru',
+          Work: 'Junior Frontend Developer',
+          Hobby: 'Web-develop',
+          Sex: 'Male',
+          Wife: 'Sofya Ogirok',
+        }
+      },
+      {
+        firstName: 'Софья',
+        lastName: 'Огирок',
+        secondName: 'Дмитриевна',
+        telNumber: '89502223344',
+        massiveOfValues: {
+          Email: 'sonuaNya@yandex.ru',
+          work: 'TeamLead',
+          Hobby: 'Web-develop',
+          Sex: 'Female',
+          Husband: 'Sharanda Andrew',
+        }
+      },
+      {
+        firstName: 'Андрей',
+        lastName: 'Шаранда',
+        secondName: 'Дмитриевич',
+        telNumber: '89118294005',
+        massiveOfValues: {
+          Email: 'andrew@yandex.ru',
+          Work: 'Junior Frontend Developer',
+          Hobby: 'Web-develop',
+          Sex: 'Male',
+          Wife: 'Sofya Ogirok',
+        }
+      },
+      {
+        firstName: 'Софья',
+        lastName: 'Огирок',
+        secondName: 'Дмитриевна',
+        telNumber: '89502223344',
+        massiveOfValues: {
+          Email: 'sonuaNya@yandex.ru',
+          work: 'TeamLead',
+          Hobby: 'Web-develop',
+          Sex: 'Female',
+          Husband: 'Sharanda Andrew',
+        }
+      },
+      {
+        firstName: 'Андрей',
+        lastName: 'Шаранда',
+        secondName: 'Дмитриевич',
+        telNumber: '89118294005',
+        massiveOfValues: {
+          Email: 'andrew@yandex.ru',
+          Work: 'Junior Frontend Developer',
+          Hobby: 'Web-develop',
+          Sex: 'Male',
+          Wife: 'Sofya Ogirok',
+        }
+      },
+      {
+        firstName: 'Софья',
+        lastName: 'Огирок',
+        secondName: 'Дмитриевна',
+        telNumber: '89502223344',
+        massiveOfValues: {
+          Email: 'sonuaNya@yandex.ru',
+          work: 'TeamLead',
+          Hobby: 'Web-develop',
+          Sex: 'Female',
+          Husband: 'Sharanda Andrew',
+        }
+      },
+      {
+        firstName: 'Андрей',
+        lastName: 'Шаранда',
+        secondName: 'Дмитриевич',
+        telNumber: '89118294005',
+        massiveOfValues: {
+          Email: 'andrew@yandex.ru',
+          Work: 'Junior Frontend Developer',
+          Hobby: 'Web-develop',
+          Sex: 'Male',
+          Wife: 'Sofya Ogirok',
+        }
+      },
+      {
+        firstName: 'Софья',
+        lastName: 'Огирок',
+        secondName: 'Дмитриевна',
+        telNumber: '89502223344',
+        massiveOfValues: {
+          Email: 'sonuaNya@yandex.ru',
+          work: 'TeamLead',
+          Hobby: 'Web-develop',
+          Sex: 'Female',
+          Husband: 'Sharanda Andrew',
+        }
+      },
+      {
+        firstName: 'Андрей',
+        lastName: 'Шаранда',
+        secondName: 'Дмитриевич',
+        telNumber: '89118294005',
+        massiveOfValues: {
+          Email: 'andrew@yandex.ru',
+          Work: 'Junior Frontend Developer',
+          Hobby: 'Web-develop',
+          Sex: 'Male',
+          Wife: 'Sofya Ogirok',
+        }
+      },
+      {
+        firstName: 'Софья',
+        lastName: 'Огирок',
+        secondName: 'Дмитриевна',
+        telNumber: '89502223344',
+        massiveOfValues: {
+          Email: 'sonuaNya@yandex.ru',
+          work: 'TeamLead',
+          Hobby: 'Web-develop',
+          Sex: 'Female',
+          Husband: 'Sharanda Andrew',
+        }
+      },
+      {
+        firstName: 'Андрей',
+        lastName: 'Шаранда',
+        secondName: 'Дмитриевич',
+        telNumber: '89118294005',
+        massiveOfValues: {
+          Email: 'andrew@yandex.ru',
+          Work: 'Junior Frontend Developer',
+          Hobby: 'Web-develop',
+          Sex: 'Male',
+          Wife: 'Sofya Ogirok',
+        }
+      },
+      {
+        firstName: 'Софья',
+        lastName: 'Огирок',
+        secondName: 'Дмитриевна',
+        telNumber: '89502223344',
+        massiveOfValues: {
+          Email: 'sonuaNya@yandex.ru',
+          work: 'TeamLead',
+          Hobby: 'Web-develop',
+          Sex: 'Female',
+          Husband: 'Sharanda Andrew',
+        }
       },
     ],
     index: 0,

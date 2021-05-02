@@ -1,22 +1,25 @@
 <template>
-  <li>
-    <label class="inputs">
+  <li class="fields__element key-style">
+    <label class="fields__body">
       <input
+          class="fields__key"
           type="text"
-          v-model.lazy="val[0]"
+          v-model.trim="val[0]"
           @mouseup="save(val)"
-          @change="done"
-      /> :
+          @change="done1"
+      />|
       <input
+          class="fields__value"
           type="text"
-          v-model.lazy="val[1]"
+          v-model.trim="val[1]"
           @mouseup="save(val)"
-          @change="done"
+          @change="done1"
       />
     </label>
 
     <button
-        class="into1"
+        class="remover non-selectable-element"
+        title="Удалить поле"
         @click="showDellModal"
     >❌</button>
   </li>
@@ -35,10 +38,6 @@ export default {
     showDellModal() {
       this.$emit('showDellModal', this.val[0]);
     },
-    done() {
-      setTimeout(this.done1(), 1000);
-
-    },
     done1() {
       this.keysValues[2] = this.val[0];
       this.keysValues[3] = this.val[1];
@@ -52,24 +51,51 @@ export default {
         this.keysValues[1] = val[1];
         this.flag = false;
       }
-    }
+    },
   }
 }
 </script>
 
 <style>
-li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 0 10px 0;
-}
+  .fields__element {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: 15%;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
 
-.inputs {
-  margin: 0;
-}
+  .fields__element:first-child {
+    margin: 20px 0;
+  }
 
-.into1 {
-  margin: 0;
-}
+  .fields__body {
+    display: flex;
+    justify-content: space-between;
+    flex: 1 1 auto;
+  }
+
+  .fields__key {
+    flex: 0 0 44%;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: inherit;
+  }
+
+  .fields__key:focus {
+    border-bottom: 1px solid black;
+  }
+
+  .fields__value {
+    flex: 0 0 43%;
+    font-size: 20px;
+    background-color: inherit;
+    margin-right: 10px;
+  }
+
+  .fields__value:focus {
+    border-bottom: 1px solid black;
+  }
 </style>
