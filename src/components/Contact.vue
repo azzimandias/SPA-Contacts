@@ -1,23 +1,26 @@
 <template>
-  <li class="contacts__element key-style">
-    <div class="contacts__index-taker"
-         @mousedown="newIndex()">
-      <router-link
-          class="contacts__link"
-          title="Контактная информация"
-          to="/contact">
-        <div class="contacts__link1"> <!--Не нравится-->
-          <div class="contacts__contact-name">
-            {{ getLastName() }}
+  <li class="contacts__element-body">
+    <div class="contacts__element key-style">
+      <div class="contacts__index-taker"
+           @mousedown="saveContactIndex()"
+      >
+        <router-link
+            class="contacts__link"
+            title="Контактная информация"
+            to="/contact">
+          <div class="contacts__link1"> <!--Не нравится-->
+            <div class="contacts__contact-name">
+              {{ getLastName() }}
+            </div>
+            {{ getFullName() }}
           </div>
-          {{ getFullName() }}
-        </div>
-      </router-link>
-      <button
-          class="remover remover1 non-selectable-element"
-          title="Удалить контакт"
-          @click="showDelModal()"
-      >❌</button>
+        </router-link>
+        <button
+            class="remover remover1 non-selectable-element"
+            title="Удалить контакт"
+            @click="showRemoveModal()"
+        >❌</button>
+      </div>
     </div>
   </li>
 </template>
@@ -27,7 +30,7 @@ import { mapState } from 'vuex';
 
 export default {
   props: {
-    i: Number,
+    contactIndex: Number,
     firstName: {
       type: String,
       default: ''
@@ -49,37 +52,37 @@ export default {
       return `${this.firstName}
               ${this.secondName}`;
     },
-    showDelModal() {
-      this.$emit('showDelModal', this.i);
+    showRemoveModal() {
+      this.$emit('showRemoveModal', this.contactIndex);
     },
-    newIndex() {
+    saveContactIndex() {
       localStorage.setItem('index', '1');
-      this.$store.commit('updateIndex', this.i);
+      this.$store.commit('updateIndex', this.contactIndex);
     }
   },
   computed: {
     ...mapState(['contacts', 'index'])
   }
-
 }
 </script>
 
 <style>
+  .contacts__element-body {
+    height: 55px;
+    margin-top: 20px;
+  }
+
   .contacts__element {
     width: 100%;
-    height: 15%;
-    margin-bottom: 20px;
-    //padding: 10px;
+    height: 50px;
     overflow: hidden;
   }
 
-  .contacts__element:first-child:active {
-    margin-top: 5px;
-    box-shadow: none;
+  .contacts__element-body:active {
+    padding-top: 5px;
   }
 
   .contacts__element:active {
-    margin-top: 25px;
     box-shadow: none;
   }
 
@@ -89,8 +92,8 @@ export default {
     align-items: center;
   }
 
-  .contacts__element:last-child {
-    margin: 0 0 100px 0;
+  .contacts__element-body:last-child {
+    margin-bottom: 100px;
   }
 
   .contacts__link {

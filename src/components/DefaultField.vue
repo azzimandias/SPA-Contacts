@@ -2,15 +2,15 @@
   <div class="default-fields">
     <div class="default-fields__body">
       <ul class="default-fields__list">
-        {{ pup() }}
         <li class="default-fields__element key-style">
           <p class="default-fields__key">Имя:</p>
           <label class="default-fields__value">
             <input
               class="default-fields__input"
-              v-model="propFullName[0]"
-              @click="saving(propFullName)"
-              @change="go()"
+              placeholder="Пусто"
+              v-model="propFullContactName[0]"
+              @click="saving(propFullContactName)"
+              @change="changeDefaultField()"
             />
           </label>
         </li>
@@ -19,9 +19,10 @@
           <label class="default-fields__value">
             <input
               class="default-fields__input"
-              v-model.lazy="propFullName[1]"
-              @click="saving(propFullName)"
-              @change="go()"
+              placeholder="Пусто"
+              v-model.lazy="propFullContactName[1]"
+              @click="saving(propFullContactName)"
+              @change="changeDefaultField()"
             />
           </label>
         </li>
@@ -32,9 +33,10 @@
           <label class="default-fields__value">
             <input
               class="default-fields__input"
-              v-model.lazy="propFullName[2]"
-              @click="saving(propFullName)"
-              @change="go()"
+              placeholder="Пусто"
+              v-model.lazy="propFullContactName[2]"
+              @click="saving(propFullContactName)"
+              @change="changeDefaultField()"
             />
           </label>
         </li>
@@ -43,9 +45,10 @@
           <label class="default-fields__value">
             <input
               class="default-fields__input"
-              v-model.lazy="propFullName[3]"
-              @click="saving(propFullName)"
-              @change="go()"
+              placeholder="Пусто"
+              v-model.lazy="propFullContactName[3]"
+              @click="saving(propFullContactName)"
+              @change="changeDefaultField()"
             />
           </label>
         </li>
@@ -56,10 +59,9 @@
 
 <script>
 export default {
-  props: ['propFullName'],
+  props: ['propFullContactName'],
   data() {
     return {
-      fullName: [],
       oldFullName: [],
       flag: true,
     }
@@ -73,15 +75,10 @@ export default {
         this.flag = false;
       }
     },
-    go() {
-      this.$emit('go', this.propFullName, this.oldFullName);
+    changeDefaultField() {
+      this.$emit('changeDefaultField', this.propFullContactName, this.oldFullName);
       this.oldFullName = [];
       this.flag = true;
-      this.pup();
-    },
-    pup() {
-      this.fullName = this.propFullName;
-      return '';
     }
   },
   computed: {

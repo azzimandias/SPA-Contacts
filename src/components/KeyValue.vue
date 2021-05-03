@@ -6,21 +6,20 @@
           type="text"
           v-model.trim="val[0]"
           @mouseup="save(val)"
-          @change="done1"
+          @change="changeField"
       />|
       <input
           class="fields__value"
           type="text"
           v-model.trim="val[1]"
           @mouseup="save(val)"
-          @change="done1"
+          @change="changeField"
       />
     </label>
-
     <button
         class="remover non-selectable-element"
         title="Удалить поле"
-        @click="showDellModal"
+        @click="showRemoveModal"
     >❌</button>
   </li>
 </template>
@@ -35,13 +34,13 @@ export default {
     }
   },
   methods: {
-    showDellModal() {
-      this.$emit('showDellModal', this.val[0]);
+    showRemoveModal() {
+      this.$emit('showRemoveModal', this.val[0]);
     },
-    done1() {
+    changeField() {
       this.keysValues[2] = this.val[0];
       this.keysValues[3] = this.val[1];
-      this.$emit('done', this.keysValues);
+      this.$emit('changeField', this.keysValues);
       this.keysValues = [];
       this.flag = true;
     },

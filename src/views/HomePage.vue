@@ -14,15 +14,15 @@
     </div>
     <div class="contacts">
       <div class="contacts__body">
-        <ul class="contacts__list" v-if="!isEmpty">
+        <ul class="contacts__list" v-if="!listIsEmpty">
           <Contact
               v-for="(contact, index) in contacts"
               :key="index"
-              :i="index"
+              :contactIndex="index"
               :firstName="contact.firstName"
               :lastName="contact.lastName"
               :secondName="contact.secondName"
-              @showDelModal="showDelModal"
+              @showRemoveModal="showRemoveModal"
           />
         </ul>
         <p
@@ -30,9 +30,9 @@
            v-else
         >Здесь пусто</p>
         <Validate
-            v-show="wannaShow"
+            v-show="wannaShowModal"
             :modalName="modalName"
-            :deletedContactName="deletedContactName"
+            :removeContactName="removeContactName"
             @removeContact="removeContact()"
             @addContact="addContact"
             @unShowModal="unShowModal()"
@@ -57,37 +57,36 @@ export default {
     Validate
   },
   data: () => ({
-    newName: '',
-    isEmpty: false,
-    wannaShow: false,
+    listIsEmpty: false,
+    wannaShowModal: false,
     modalName: '',
-    deletedContactName: '',
-    delIndex: 0
+    removeContactName: '',
+    removeIndex: 0
   }),
   methods: {
     addContact(newContact) {
       this.unShowModal();
       this.contacts.push(newContact);
-      this.isEmpty = false;
+      this.listIsEmpty = false;
     },
     showAddModal() {
       this.modalName = 'AddOnFirstPage';
-      this.wannaShow = true;
+      this.wannaShowModal = true;
     },
-    showDelModal(index) {
-      this.modalName = 'DelOnFirstPage';
-      this.deletedContactName = this.contacts[index].firstName;
-      this.delIndex = index;
-      this.wannaShow = true;
+    showRemoveModal(contactIndex) {
+      this.modalName = 'RemoveOnFirstPage';
+      this.removeContactName = this.contacts[contactIndex].firstName;
+      this.removeIndex = contactIndex;
+      this.wannaShowModal = true;
     },
     removeContact() {
       this.unShowModal();
-      this.contacts.splice(this.delIndex, 1);
-      this.delIndex = 0;
-      if (this.contacts.length === 0) this.isEmpty = true;
+      this.contacts.splice(this.removeIndex, 1);
+      this.removeIndex = 0;
+      if (this.contacts.length === 0) this.listIsEmpty = true;
     },
     unShowModal() {
-      this.wannaShow = false;
+      this.wannaShowModal = false;
     }
   },
   computed: {
@@ -127,8 +126,8 @@ export default {
   }
 
   .nav__title_margin {
-    flex: 0 1 calc(50% + 225px);
-    text-align: left;
+    flex: 1 0 auto;
+    text-align: center;
   }
 
   .nav__adder {
@@ -177,21 +176,12 @@ export default {
       font-size: 25px;
     }
 
-    .nav__title_margin {
-      flex: 0 1 calc(50% + 150px);
-      font-size: 20px;
-    }
-
     .nav__body_padding {
       padding: 20px 10px;
     }
 
     .contacts__link1 {
       font-size: 18px;
-    }
-
-    .link {
-      font-size: 15px;
     }
 
     .controls__fake {
@@ -205,7 +195,7 @@ export default {
       align-self: center;
     }
 
-    .controls__cancale {
+    .controls__cancel {
       width: 50px;
       height: 50px;
       font-size: 20px;
@@ -269,7 +259,7 @@ export default {
       margin-top: 10px;
     }
 
-    .controls__cancale:active {
+    .controls__cancel:active {
       margin-top: 10px;
     }
 
@@ -280,8 +270,19 @@ export default {
 
   @media screen and (max-width: 515px) {
     .nav__title_margin {
-      flex: 0 1 auto;
       font-size: 17px;
+    }
+
+    .non-visible {
+      display: none;
+    }
+
+    .nav__link-body {
+      width: 27px;
+    }
+
+    .link {
+      width: 100%;
     }
 
     .controls__title {
@@ -309,11 +310,11 @@ export default {
       width: 55px;
     }
 
-    .controls__cancale {
+    .controls__cancel {
       display: none;
     }
 
-    .controls__cancale-1 {
+    .controls__cancel-1 {
       display: block;
       margin-top: 5px;
     }
@@ -329,7 +330,6 @@ export default {
 
   @media screen and (max-width: 360px) {
     .nav__title_margin {
-      flex: 0 1 auto;
       font-size: 16px;
     }
 
@@ -345,12 +345,50 @@ export default {
       width: 50px;
     }
 
-    .controls__cancale {
+    .controls__cancel {
       margin: 5px 0 0 0;
+    }
+
+    .contacts__link {
+      padding: 5px 0 5px 10px;
     }
 
     .contacts__link1 {
       flex-direction: column;
+    }
+
+    .contacts__element-body {
+      height: 60px;
+    }
+
+    .contacts__element {
+      height: 55px;
+    }
+
+    .modal__body {
+      width: 250px;
+      height: 150px;
+      left: calc(50% - 125px);
+    }
+
+    .modal__tittle {
+      font-size: 16px;
+      padding: 0 10px;
+      margin: 20px 0;
+    }
+
+    .modal__input {
+      width: 100px;
+      font-size: 14px;
+    }
+
+    .modal__button {
+      width: 45px;
+      height: 45px;
+      margin: 10px;
+      flex: 0 1 auto;
+      font-size: 20px;
+      background-color: inherit;
     }
   }
 </style>

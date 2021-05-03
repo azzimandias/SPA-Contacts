@@ -22,15 +22,27 @@
         />
       </label>
       <div class="modal__buttons-body">
-        <button class="modal__button non-selectable-element" @click="addContact()">&#9989</button>
-        <button class="modal__button non-selectable-element" @click="unShowModal()">❌</button>
+        <button class="modal__button non-selectable-element"
+                @click="addContact()"
+                @keypress.enter="addContact()"
+        >&#9989</button>
+        <button class="modal__button non-selectable-element"
+                @click="unShowModal()"
+                @keypress.esc="unShowModal()"
+        >❌</button>
       </div>
     </div>
-    <div class="modal__body key-style" v-else-if="modalName === 'DelOnFirstPage'">
-      <h4 class="modal__tittle">Вы уверены, что хотите удалить контакт {{ deletedContactName }}?</h4>
+    <div class="modal__body key-style" v-else-if="modalName === 'RemoveOnFirstPage'">
+      <h4 class="modal__tittle">Вы уверены, что хотите удалить контакт {{ removeContactName }}?</h4>
       <div class="modal__buttons-body">
-        <button class="modal__button non-selectable-element" @click="removeContact()">&#9989</button>
-        <button class="modal__button non-selectable-element" @click="unShowModal()">❌</button>
+        <button class="modal__button non-selectable-element"
+                @click="removeContact()"
+                @keypress.enter="removeContact()"
+        >&#9989</button>
+        <button class="modal__button non-selectable-element"
+                @click="unShowModal()"
+                @keypress.esc="unShowModal()"
+        >❌</button>
       </div>
     </div>
     <div class="modal__body key-style" v-else-if="modalName === 'AddOnSecondPage'">
@@ -49,22 +61,40 @@
         />
       </label>
       <div class="modal__buttons-body">
-        <button class="modal__button non-selectable-element" @click="addField()">&#9989</button>
-        <button class="modal__button non-selectable-element" @click="unShowModal()">❌</button>
+        <button class="modal__button non-selectable-element"
+                @click="addField()"
+                @keypress.enter="addField()"
+        >&#9989</button>
+        <button class="modal__button non-selectable-element"
+                @click="unShowModal()"
+                @keypress.esc="unShowModal()"
+        >❌</button>
       </div>
     </div>
-    <div class="modal__body key-style" v-else-if="modalName === 'DelOnSecondPage'">
-      <h4 class="modal__tittle">Вы уверены, что хотите удалить поле {{ deletedFieldName }}?</h4>
+    <div class="modal__body key-style" v-else-if="modalName === 'RemoveOnSecondPage'">
+      <h4 class="modal__tittle">Вы уверены, что хотите удалить поле {{ removeFieldName }}?</h4>
       <div class="modal__buttons-body">
-        <button class="modal__button non-selectable-element" @click="removeFild()">&#9989</button>
-        <button class="modal__button non-selectable-element" @click="unShowModal()">❌</button>
+        <button class="modal__button non-selectable-element"
+                @click="removeField()"
+                @keypress.enter="removeField()"
+        >&#9989</button>
+        <button class="modal__button non-selectable-element"
+                @click="unShowModal()"
+                @keypress.esc="unShowModal()"
+        >❌</button>
       </div>
     </div>
     <div class="modal__body key-style" v-else-if="modalName === 'CanOnSecondPage'">
       <h4 class="modal__tittle">Вы уверены, что хотите отменить все изменения?</h4>
       <div class="modal__buttons-body">
-        <button class="modal__button non-selectable-element" @click="canceleAll()">&#9989</button>
-        <button class="modal__button non-selectable-element" @click="unShowModal()">❌</button>
+        <button class="modal__button non-selectable-element"
+                @click="cancelAll()"
+                @keypress.enter="cancelAll()"
+        >&#9989</button>
+        <button class="modal__button non-selectable-element"
+                @click="unShowModal()"
+                @keypress.esc="unShowModal()"
+        >❌</button>
       </div>
     </div>
   </div>
@@ -72,7 +102,7 @@
 
 <script>
 export default {
-  props: ['deletedContactName', 'deletedFieldName', 'modalName'],
+  props: ['removeContactName', 'removeFieldName', 'modalName'],
   data() {
     return {
       values: []
@@ -101,11 +131,11 @@ export default {
         this.values = [];
       }
     },
-    removeFild() {
-      this.$emit('removeFild');
+    removeField() {
+      this.$emit('removeField');
     },
-    canceleAll() {
-      this.$emit('canceleAll');
+    cancelAll() {
+      this.$emit('cancelAll');
     },
     unShowModal() {
       this.$emit('unShowModal');

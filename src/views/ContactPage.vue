@@ -1,17 +1,23 @@
 <template>
   <div class="contact-page">
-    {{ CloneMassiveOfValues }}
+    {{ cloneMassiveOfValues() }}
     <div class="nav">
       <div class="nav__body nav__body_padding">
         <div class="nav__content">
-          <div class="nav__link"  @click="cleanSaved()">
-            <router-link class="link" title="Контакты" to="/">◀</router-link>
+          <div class="nav__link-body">
+            <div class="nav__link"  @click="cleanAllSavedData()">
+              <router-link class="link non-selectable-element"
+                           title="Контакты"
+                           to="/"
+              >◀</router-link>
+            </div>
           </div>
           <div class="nav__title nav__title_margin" >
-            <div>{{ getLastname }}</div>
-            {{ getName }}
-            {{ getSecondname }}
+            <div class="lastname">{{ getLastname() }}</div>
+            {{ getName() }}
+            {{ getSecondName() }}
           </div>
+          <div class="nav__link non-visible"></div>
           <button
               class="nav__adder nav__adder_display non-selectable-element"
               title="Добавить поле"
@@ -27,21 +33,21 @@
           <button
               class="controls__undo key-style non-selectable-element"
               title="Отменить последнее изменение"
-              @mousedown="undoOneThing()"
+              @mousedown="whatIsUndo()"
           >↩</button>
           {{ unShowUndo() }}
           <button
-              class="controls__cancale key-style non-selectable-element"
+              class="controls__cancel key-style non-selectable-element"
               title="Отменить все изменения"
-              @click="showCanceleModal()"
+              @click="showCancelModal()"
           >🔄</button>
         </div>
         <h3 class="controls__title">Контактная информация</h3>
         <div class="controls__fake">
           <button
-              class="controls__cancale controls__cancale-1 key-style non-selectable-element"
+              class="controls__cancel controls__cancel-1 key-style non-selectable-element"
               title="Отменить все изменения"
-              @click="showCanceleModal()"
+              @click="showCancelModal()"
               v-if="showUndo"
           >🔄</button>
           <button
@@ -52,18 +58,17 @@
         </div>
       </div>
       <DefaultField
-          :propFullName="fullName"
+          :propFullContactName="fullContactName"
           :key="defaultFieldKey"
-          @go="go"
+          @changeDefaultField="changeDefaultField"
       />
-      <ul class="fields" v-if="!isEmpty">
+      <ul class="fields" v-if="!fieldsIsEmpty">
         <KeyValue
             v-for="(val, i) in Object.entries(savedMassiveOfValues)"
-            :key="getKey(i)"
+            :key="getFieldKey(i)"
             :val="val"
-            @done="done"
-            @showDellModal="showDellModal"
-            @showCanceleModal="showCanceleModal()"
+            @changeField="changeField"
+            @showRemoveModal="showRemoveModal"
         />
       </ul>
       <p
@@ -72,12 +77,12 @@
       >Здесь пусто</p>
   </div>
     <Validate
-        v-if="wannaShow"
+        v-if="wannaShowModal"
         :modalName="modalName"
-        :deletedFieldName="deletedFieldName"
+        :removeFieldName="removeFieldName"
         @addField="addField"
-        @removeFild="removeFild()"
-        @canceleAll="canceleAll()"
+        @removeField="removeField()"
+        @cancelAll="cancelAll()"
         @unShowModal="unShowModal()"
     />
   </div>
@@ -98,75 +103,75 @@ export default {
   },
   data() {
     return {
-      isEmpty: false,
-      flag: false,
-      wannaShow: false,
+      fieldsIsEmpty: false,
+      doCloneMassive: true,
+      wannaShowModal: false,
       showUndo: false,
-      showCancele: false,
+      showCancel: false,
       modalName: '',
-      deletedFieldName: '',
+      removeFieldName: '',
       savedMassiveOfValues: {},
       undo: [],
       whatsUndo: [[], [], [], []],
       forOptimize: [],
-      fullName: [],
-      defArray: [],
-      KeyValueKey: 0,
+      fullContactName: [],
+      defaultArray: [],
+      fieldKey: 0,
       defaultFieldKey: 0,
     }
   },
   methods: {
-    forceRerenderKeyValue() {
-      this.KeyValueKey += 1;
+    forceRerenderFields() {
+      this.fieldKey += 1;
     },
-    forceRerenderDefaultField() {
+    forceRerenderDefaultFields() {
       this.defaultFieldKey += 1;
     },
-    getKey(id) {
-      return (id + this.KeyValueKey);
+    getFieldKey(id) {
+      return (id + this.fieldKey);
     },
 /////////////////////////////////////////////////////////////////////////Clean///////////////////
-    cleanSaved() {
-      this.updateContacts();
-      this.updateSaved();
+    cleanAllSavedData() {
+      this.contactMassiveMutation();
+      this.cleanSavedMassive();
       this.cleanUndo();
       localStorage.removeItem('index');
     },
-    updateContacts() {
-      this.defFieldsMutation(this.fullName);
-      this.$store.commit('updateContacts', this.savedMassiveOfValues);
-      this.isEmpty = false;
+    contactMassiveMutation() {
+      this.defaultFieldsMutation(this.fullContactName);
+      this.$store.commit('contactMassiveMutation', this.savedMassiveOfValues);
+      this.fieldsIsEmpty = false;
     },
-    updateSaved() {
+    cleanSavedMassive() {
       this.savedMassiveOfValues = {};
     },
 /////////////////////////////////////////////////////////////////////////Undo///////////////////
-    undoOneThing() {
+    whatIsUndo() {
       switch (this.undo[this.undo.length - 1]) {
         case 'wasAdded':
-          this.goBackAdd();
+          this.undoAdd();
           break;
-        case'wasDeleted':
-          this.goBackDel();
+        case'wasRemoved':
+          this.undoRemove();
           break;
         case 'wasChanged':
-          this.goBackChe();
+          this.undoChangedFields();
           break;
-        case 'wasChangedDef':
-          this.goBackCheDef();
+        case 'wasChangedDefault':
+          this.undoChangedDefaultFields();
           break;
       }
       this.undo.splice(this.searchLastIndex(this.undo), 1);
     },
-    goBackAdd() {
+    undoAdd() {
       this.getAllIndexes(this.whatsUndo[0][this.searchLastIndex(this.whatsUndo[0])]);
       delete this.savedMassiveOfValues[this.forOptimize[0]];
       this.whatsUndo[0].splice(this.searchLastIndex(this.whatsUndo[0]), 1);
       this.cleanForOptimize();
       this.getIsEmpty();
-      this.forceRerenderKeyValue();
+      this.forceRerenderFields();
     },
-    goBackDel() {
+    undoRemove() {
       this.getAllIndexes(this.whatsUndo[1][this.searchLastIndex(this.whatsUndo[1])]);
       let obj = this.ObjMutation(this.forOptimize[2]);
       this.savedMassiveOfValues[this.forOptimize[0]] = this.forOptimize[1];
@@ -175,9 +180,9 @@ export default {
 
       this.cleanForOptimize();
       this.getIsEmpty();
-      this.forceRerenderKeyValue();
+      this.forceRerenderFields();
     },
-    goBackChe() {
+    undoChangedFields() {
       this.getAllIndexes(this.whatsUndo[2][this.searchLastIndex(this.whatsUndo[2])]);
       let obj = this.ObjMutation(this.forOptimize[2]);
       this.savedMassiveOfValues[this.forOptimize[0]] = this.savedMassiveOfValues[this.forOptimize[2]];
@@ -186,18 +191,18 @@ export default {
       Object.assign(this.savedMassiveOfValues, obj);
       this.whatsUndo[2].splice(this.searchLastIndex(this.whatsUndo[2]), 1);
       this.cleanForOptimize();
-      this.forceRerenderKeyValue();
+      this.forceRerenderFields();
     },
-    goBackCheDef() {
+    undoChangedDefaultFields() {
       this.getAllIndexes(this.whatsUndo[3][this.searchLastIndex(this.whatsUndo[3])]);
-      this.defFieldsMutation(this.forOptimize);
-      this.updateFullName;
-      this.forceRerenderDefaultField();
+      this.defaultFieldsMutation(this.forOptimize);
+      this.updateFullName();
+      this.forceRerenderDefaultFields();
       this.whatsUndo[3].splice(this.searchLastIndex(this.whatsUndo[3]), 1);
       this.cleanForOptimize();
-      this.getName;
-      this.getLastname;
-      this.getSecondname;
+      this.getName();
+      this.getLastname();
+      this.getSecondName();
     },
     searchLastIndex(array) {
       return array.lastIndexOf(array[array.length - 1]);
@@ -213,7 +218,7 @@ export default {
     unShowUndo() {
       if (this.undo.length === 0) {
         this.showUndo = false;
-        this.showCancele = false;
+        this.showCancel = false;
       }
     },
     cleanUndo() {
@@ -222,27 +227,27 @@ export default {
 /////////////////////////////////////////////////////////////////////////Add///////////////////
     showAddModal() {
       this.modalName = 'AddOnSecondPage';
-      this.wannaShow = true;
+      this.wannaShowModal = true;
     },
     addField(key, value) {
       this.savedMassiveOfValues[key] = value;
       this.unShowModal();
-      this.showCancele = true;
+      this.showCancel = true;
       this.showUndo = true;
       this.undo.push('wasAdded');
       this.whatsUndo[0].push([key, value]);
-      this.isEmpty = false;
+      this.fieldsIsEmpty = false;
     },
-/////////////////////////////////////////////////////////////////////////Del///////////////////
-    showDellModal(newKey) {
-      this.modalName = 'DelOnSecondPage';
-      this.deletedFieldName = newKey;
-      this.wannaShow = true;
+/////////////////////////////////////////////////////////////////////////Remove///////////////////
+    showRemoveModal(newKey) {
+      this.modalName = 'RemoveOnSecondPage';
+      this.removeFieldName = newKey;
+      this.wannaShowModal = true;
     },
-    removeFild() {
+    removeField() {
       let key = Object.keys(this.savedMassiveOfValues);
       for (let element of key) {
-        if (element === this.deletedFieldName) {
+        if (element === this.removeFieldName) {
           break;
         }
         key = element;
@@ -250,18 +255,18 @@ export default {
       if (typeof key !== 'string') {
         key = 0;
       }
-      this.whatsUndo[1].push([this.deletedFieldName,
-                                this.savedMassiveOfValues[this.deletedFieldName],
+      this.whatsUndo[1].push([this.removeFieldName,
+                                this.savedMassiveOfValues[this.removeFieldName],
                                 key]);
-      delete (this.savedMassiveOfValues)[this.deletedFieldName];
+      delete (this.savedMassiveOfValues)[this.removeFieldName];
       this.unShowModal();
-      this.showCancele = true;
+      this.showCancel = true;
       this.showUndo = true;
-      this.undo.push('wasDeleted');
+      this.undo.push('wasRemoved');
       this.getIsEmpty();
     },
-/////////////////////////////////////////////////////////////////////////redaction///////////////////
-    done(keysValues) {
+/////////////////////////////////////////////////////////////////////////Change///////////////////
+    changeField(keysValues) {
       this.whatsUndo[2].push(keysValues);
 
       if (keysValues[0] === keysValues[2]) {
@@ -275,49 +280,51 @@ export default {
         Object.assign(this.savedMassiveOfValues, obj);
       }
 
-      this.showCancele = true;
+      this.showCancel = true;
       this.showUndo = true;
       this.undo.push('wasChanged');
     },
-/////////////////////////////////////////////////////////////////////////redaction Def///////////////////
-    go(fullName, oldFullName) {
+/////////////////////////////////////////////////////////////////////////ChangeDef///////////////////
+    changeDefaultField(fullName, oldFullName) {
       this.whatsUndo[3].push(oldFullName);
-      this.fullName = fullName;
-      this.defFieldsMutation(fullName);
+      this.fullContactName = fullName;
+      this.defaultFieldsMutation(fullName);
 
-      this.showCancele = true;
+      this.showCancel = true;
       this.showUndo = true;
-      this.undo.push('wasChangedDef');
-      this.getName;
-      this.getLastname;
-      this.getSecondname;
+      this.undo.push('wasChangedDefault');
+      this.getName();
+      this.getLastname();
+      this.getSecondName();
     },
-/////////////////////////////////////////////////////////////////////////CanceleAll///////////////////
-    showCanceleModal() {
+/////////////////////////////////////////////////////////////////////////CancelAll///////////////////
+    showCancelModal() {
       this.modalName = 'CanOnSecondPage';
-      this.wannaShow = true;
+      this.wannaShowModal = true;
     },
-    canceleAll() {
-      this.updateSaved();
+    cancelAll() {
+      this.cleanSavedMassive();
       Object.assign(this.savedMassiveOfValues,
                     this.contacts[this.index].massiveOfValues);
-      this.defFieldsMutation(this.defArray);
-      this.showCancele = false;
+      this.defaultFieldsMutation(this.defaultArray);
+      this.showCancel = false;
       this.showUndo = false;
       this.unShowModal();
       this.cleanUndo();
       this.whatsUndo = [[], [], [], []];
       this.getIsEmpty();
+      this.forceRerenderDefaultFields();
+      this.updateFullName();
     },
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     unShowModal() {
-      this.wannaShow = false;
+      this.wannaShowModal = false;
     },
     getIsEmpty() {
-      this.isEmpty = Object.keys(this.savedMassiveOfValues).length === 0;
+      this.fieldsIsEmpty = Object.keys(this.savedMassiveOfValues).length === 0;
     },
-    defFieldsMutation(fullName) {
-      this.$store.commit('updateContactsDef', fullName);
+    defaultFieldsMutation(fullName) {
+      this.$store.commit('defaultFieldsMutation', fullName);
     },
     ObjMutation(old_key) {
       let obj = {};
@@ -338,27 +345,25 @@ export default {
       }
       return obj;
     },
-  },
-  computed: {
-    CloneMassiveOfValues() {
-      if (!this.flag) {
-        this.updateSaved();
+    cloneMassiveOfValues() {
+      if (this.doCloneMassive) {
+        this.cleanSavedMassive();
         Object.assign(this.savedMassiveOfValues,
             this.contacts[this.index].massiveOfValues);
         this.getIsEmpty();
-        this.defArray.push(this.fullName[0] = this.contacts[this.index].firstName);
-        this.defArray.push(this.fullName[1] = this.contacts[this.index].lastName);
-        this.defArray.push(this.fullName[2] = this.contacts[this.index].secondName);
-        this.defArray.push(this.fullName[3] = this.contacts[this.index].telNumber);
-        this.flag = true;
+        this.defaultArray.push(this.fullContactName[0] = this.contacts[this.index].firstName);
+        this.defaultArray.push(this.fullContactName[1] = this.contacts[this.index].lastName);
+        this.defaultArray.push(this.fullContactName[2] = this.contacts[this.index].secondName);
+        this.defaultArray.push(this.fullContactName[3] = this.contacts[this.index].telNumber);
+        this.doCloneMassive = false;
       }
       return '';
     },
     updateFullName() {
-      this.fullName[0] = this.contacts[this.index].firstName;
-      this.fullName[1] = this.contacts[this.index].lastName;
-      this.fullName[2] = this.contacts[this.index].secondName;
-      this.fullName[3] = this.contacts[this.index].telNumber;
+      this.fullContactName[0] = this.contacts[this.index].firstName;
+      this.fullContactName[1] = this.contacts[this.index].lastName;
+      this.fullContactName[2] = this.contacts[this.index].secondName;
+      this.fullContactName[3] = this.contacts[this.index].telNumber;
       return '';
     },
     getName() {
@@ -371,15 +376,15 @@ export default {
         return '';
       }
     },
-    getSecondname() {
+    getSecondName() {
       if (this.contacts[this.index].secondName !== undefined) {
         return `${this.contacts[this.index].secondName}`;
       } else {
         return '';
       }
     },
-    ...mapState(['contacts', 'index'])
-  }
+  },
+  computed: mapState(['contacts', 'index'])
 }
 </script>
 
@@ -390,9 +395,14 @@ export default {
   }
 
   .link {
-    width: 89px;
+    font-size: 20px;
     color: #2c3e50;
     font-weight: bold;
+  }
+
+  .lastname {
+    width: 100%;
+    text-align: center;
   }
 
   .contact-page-body {
@@ -430,7 +440,7 @@ export default {
     box-shadow: none;
   }
 
-  .controls__cancale {
+  .controls__cancel {
     width: 55px;
     height: 55px;
     font-size: 25px;
@@ -438,12 +448,12 @@ export default {
     padding: 10px;
   }
 
-  .controls__cancale:active {
+  .controls__cancel:active {
     margin-top: 10px;
     box-shadow: none;
   }
 
-  .controls__cancale-1 {
+  .controls__cancel-1 {
     display: none;
   }
 
