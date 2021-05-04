@@ -120,7 +120,7 @@ export default {
   }
 
   .nav__title {
-    flex: 0 1 calc(50% + 71px);
+    flex: 0 1 calc(50% + 64px);
     text-align: right;
     font-size: 30px;
   }
@@ -172,7 +172,7 @@ export default {
 
   @media screen and (max-width: 720px) {
     .nav__title {
-      flex: 0 1 calc(50% + 59px);
+      flex: 0 1 calc(50% + 53px);
       font-size: 25px;
     }
 

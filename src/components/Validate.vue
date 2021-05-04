@@ -50,12 +50,12 @@
         <input
             class="modal__input"
             type="text"
-            placeholder="Key"
+            placeholder=" Key"
             v-model="values[0]"
         />
         <input
             class="modal__input"
-            placeholder="Value"
+            placeholder=" Value"
             v-model="values[1]"
         />
       </label>

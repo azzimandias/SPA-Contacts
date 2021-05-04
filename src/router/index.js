@@ -17,10 +17,10 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (localStorage.getItem('index')) {
         next();
+        localStorage.removeItem('index');
       } else {
         next({name: 'HomePage'});
       }
-      next();
     }
   },
   {

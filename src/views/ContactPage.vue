@@ -1,6 +1,7 @@
 <template>
   <div class="contact-page">
     {{ cloneMassiveOfValues() }}
+    {{ pup }}
     <div class="nav">
       <div class="nav__body nav__body_padding">
         <div class="nav__content">
@@ -388,7 +389,12 @@ export default {
       }
     },
   },
-  computed: mapState(['contacts', 'index'])
+  computed: {
+    pup() {
+      addEventListener("popstate", this.cleanAllSavedData, false);
+    },
+    ...mapState(['contacts', 'index'])
+  }
 }
 </script>
 
