@@ -3,10 +3,10 @@
     <div class="nav">
       <div class="nav__body">
         <div class="nav__content">
-          <h2 class="nav__title">Контакты</h2>
+          <h2 class="nav__title">Contacts</h2>
           <button
               class="nav__adder non-selectable-element"
-              title="Добавить контакт"
+              title="Add contact"
               @click="showAddModal()"
           >➕</button>
         </div>
@@ -28,7 +28,7 @@
         <p
            class="empty"
            v-else
-        >Здесь пусто</p>
+        >It's empty here</p>
         <Validate
             v-show="wannaShowModal"
             :modalName="modalName"

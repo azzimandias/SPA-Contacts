@@ -6,9 +6,9 @@
       >
         <router-link
             class="contacts__link"
-            title="Контактная информация"
+            title="Contact Information"
             to="/contact">
-          <div class="contacts__link1"> <!--Не нравится-->
+          <div class="contacts__link1">
             <div class="contacts__contact-name">
               {{ getLastName() }}
             </div>
@@ -17,7 +17,7 @@
         </router-link>
         <button
             class="remover remover1 non-selectable-element"
-            title="Удалить контакт"
+            title="Remove contact"
             @click="showRemoveModal()"
         >❌</button>
       </div>

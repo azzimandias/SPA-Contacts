@@ -7,29 +7,69 @@ export default new Vuex.Store({
   state: {
     contacts: [
       {
-        firstName: 'Андрей',
-        lastName: 'Шаранда',
-        secondName: 'Дмитриевич',
-        telNumber: '89118294005',
+        firstName: 'Andrew',
+        lastName: 'Sharanda',
+        secondName: 'Dmitrievich',
+        telNumber: '89119508008',
         massiveOfValues: {
           Email: 'andrew@yandex.ru',
           Work: 'Junior Frontend Developer',
-          Hobby: 'Web-develop',
           Sex: 'Male',
-          Wife: 'Sofya Ogirok',
         }
       },
       {
-        firstName: 'Софья',
-        lastName: 'Огирок',
-        secondName: 'Дмитриевна',
+        firstName: 'Ariana',
+        lastName: 'Grande',
+        secondName: '',
         telNumber: '89502223344',
         massiveOfValues: {
-          Email: 'sonuaNya@yandex.ru',
-          work: 'TeamLead',
-          Hobby: 'Web-develop',
+          Email: 'Grande@yandex.ru',
+          work: 'Singer',
           Sex: 'Female',
-          Husband: 'Sharanda Andrew',
+        }
+      },
+      {
+        firstName: 'Aleksander',
+        lastName: 'Petrov',
+        secondName: 'Andreevich',
+        telNumber: '89119508008',
+        massiveOfValues: {
+          Email: 'Petrov@yandex.ru',
+          Work: 'Actor',
+          Sex: 'Male',
+        }
+      },
+      {
+        firstName: 'Kendall',
+        lastName: 'Jenner',
+        secondName: '',
+        telNumber: '89502223344',
+        massiveOfValues: {
+          Email: 'Kendall@yandex.ru',
+          work: 'Model',
+          Sex: 'Female',
+        }
+      },
+      {
+        firstName: 'Pavel',
+        lastName: 'Durov',
+        secondName: 'Valerievich',
+        telNumber: '89119508008',
+        massiveOfValues: {
+          Email: 'Durov@yandex.ru',
+          Work: 'Programmer',
+          Sex: 'Male',
+        }
+      },
+      {
+        firstName: 'Selena',
+        lastName: 'Gomez',
+        secondName: '',
+        telNumber: '89502223344',
+        massiveOfValues: {
+          Email: 'Gomez@yandex.ru',
+          work: 'Singer',
+          Sex: 'Female',
         }
       },
     ],

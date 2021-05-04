@@ -3,24 +3,26 @@
     <div class="default-fields__body">
       <ul class="default-fields__list">
         <li class="default-fields__element key-style">
-          <p class="default-fields__key">Имя:</p>
+          <p class="default-fields__key">Name:</p>
           <label class="default-fields__value">
             <input
               class="default-fields__input"
-              placeholder="Пусто"
-              v-model="propFullContactName[0]"
+              type="text"
+              placeholder="Empty"
+              v-model.trim="propFullContactName[0]"
               @click="saving(propFullContactName)"
               @change="changeDefaultField()"
             />
           </label>
         </li>
         <li class="default-fields__element key-style">
-          <p class="default-fields__key">Фамилия:</p>
+          <p class="default-fields__key">Lastname:</p>
           <label class="default-fields__value">
             <input
               class="default-fields__input"
-              placeholder="Пусто"
-              v-model.lazy="propFullContactName[1]"
+              type="text"
+              placeholder="Empty"
+              v-model.trim="propFullContactName[1]"
               @click="saving(propFullContactName)"
               @change="changeDefaultField()"
             />
@@ -29,24 +31,26 @@
       </ul>
       <ul class="default-fields__list">
         <li class="default-fields__element key-style">
-          <p class="default-fields__key">Отчество:</p>
+          <p class="default-fields__key">Secondname:</p>
           <label class="default-fields__value">
             <input
               class="default-fields__input"
-              placeholder="Пусто"
-              v-model.lazy="propFullContactName[2]"
+              type="text"
+              placeholder="Empty"
+              v-model.trim="propFullContactName[2]"
               @click="saving(propFullContactName)"
               @change="changeDefaultField()"
             />
           </label>
         </li>
         <li class="default-fields__element key-style">
-          <p class="default-fields__key">Номер телефона:</p>
+          <p class="default-fields__key">Phone number:</p>
           <label class="default-fields__value">
             <input
               class="default-fields__input"
-              placeholder="Пусто"
-              v-model.lazy="propFullContactName[3]"
+              type="number"
+              placeholder="Empty"
+              v-model.trim="propFullContactName[3]"
               @click="saving(propFullContactName)"
               @change="changeDefaultField()"
             />
@@ -63,6 +67,7 @@ export default {
   data() {
     return {
       oldFullName: [],
+      trim: false,
       flag: true,
     }
   },
@@ -76,14 +81,18 @@ export default {
       }
     },
     changeDefaultField() {
-      this.$emit('changeDefaultField', this.propFullContactName, this.oldFullName);
+      if (this.oldFullName[0] === this.propFullContactName[0].trim() &&
+          this.oldFullName[1] === this.propFullContactName[1].trim() &&
+          this.oldFullName[2] === this.propFullContactName[2].trim()) {
+        this.trim = true;
+        console.log('ddd')
+      }
+      this.$emit('changeDefaultField', this.propFullContactName, this.oldFullName, this.trim);
       this.oldFullName = [];
+      this.trim = false;
       this.flag = true;
     }
   },
-  computed: {
-
-  }
 }
 </script>
 

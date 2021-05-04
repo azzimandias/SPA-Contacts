@@ -7,7 +7,7 @@
           <div class="nav__link-body">
             <div class="nav__link"  @click="cleanAllSavedData()">
               <router-link class="link non-selectable-element"
-                           title="Контакты"
+                           title="Contacts"
                            to="/"
               >◀</router-link>
             </div>
@@ -20,7 +20,7 @@
           <div class="nav__link non-visible"></div>
           <button
               class="nav__adder nav__adder_display non-selectable-element"
-              title="Добавить поле"
+              title="Add field"
               @click="showAddModal()"
           >➕</button>
         </div>
@@ -32,13 +32,13 @@
         <div class="controls__buttons" v-else-if="showUndo">
           <button
               class="controls__undo key-style non-selectable-element"
-              title="Отменить последнее изменение"
+              title="Undo the last change"
               @mousedown="whatIsUndo()"
           >↩</button>
           {{ unShowUndo() }}
           <button
               class="controls__cancel key-style non-selectable-element"
-              title="Отменить все изменения"
+              title="Undo all changes"
               @click="showCancelModal()"
           >🔄</button>
         </div>
@@ -46,13 +46,13 @@
         <div class="controls__fake">
           <button
               class="controls__cancel controls__cancel-1 key-style non-selectable-element"
-              title="Отменить все изменения"
+              title="Undo all changes"
               @click="showCancelModal()"
               v-if="showUndo"
           >🔄</button>
           <button
               class="controls__adder key-style non-selectable-element"
-              title="Добавить поле"
+              title="Add field"
               @click="showAddModal()"
           >➕</button>
         </div>
@@ -74,7 +74,7 @@
       <p
           class="empty"
           v-else
-      >Здесь пусто</p>
+      >It's empty here</p>
   </div>
     <Validate
         v-if="wannaShowModal"
@@ -266,36 +266,40 @@ export default {
       this.getIsEmpty();
     },
 /////////////////////////////////////////////////////////////////////////Change///////////////////
-    changeField(keysValues) {
-      this.whatsUndo[2].push(keysValues);
+    changeField(keysValues, trim) {
+      if (!trim) {
+        this.whatsUndo[2].push(keysValues);
 
-      if (keysValues[0] === keysValues[2]) {
-        this.savedMassiveOfValues[keysValues[0]] = keysValues[3];
-      }
-      if (keysValues[0] !== keysValues[2]) {
-        let obj = this.ObjMutation(keysValues[0]);
-        Object.defineProperty(this.savedMassiveOfValues, keysValues[2],
-            Object.getOwnPropertyDescriptor(this.savedMassiveOfValues, keysValues[0]));
-        delete this.savedMassiveOfValues[keysValues[0]];
-        Object.assign(this.savedMassiveOfValues, obj);
-      }
+        if (keysValues[0] === keysValues[2]) {
+          this.savedMassiveOfValues[keysValues[0]] = keysValues[3];
+        }
+        if (keysValues[0] !== keysValues[2]) {
+          let obj = this.ObjMutation(keysValues[0]);
+          Object.defineProperty(this.savedMassiveOfValues, keysValues[2],
+              Object.getOwnPropertyDescriptor(this.savedMassiveOfValues, keysValues[0]));
+          delete this.savedMassiveOfValues[keysValues[0]];
+          Object.assign(this.savedMassiveOfValues, obj);
+        }
 
-      this.showCancel = true;
-      this.showUndo = true;
-      this.undo.push('wasChanged');
+        this.showCancel = true;
+        this.showUndo = true;
+        this.undo.push('wasChanged');
+      }
     },
 /////////////////////////////////////////////////////////////////////////ChangeDef///////////////////
-    changeDefaultField(fullName, oldFullName) {
-      this.whatsUndo[3].push(oldFullName);
-      this.fullContactName = fullName;
-      this.defaultFieldsMutation(fullName);
+    changeDefaultField(fullName, oldFullName, trim) {
+      if (!trim) {
+        this.whatsUndo[3].push(oldFullName);
+        this.fullContactName = fullName;
+        this.defaultFieldsMutation(fullName);
 
-      this.showCancel = true;
-      this.showUndo = true;
-      this.undo.push('wasChangedDefault');
-      this.getName();
-      this.getLastname();
-      this.getSecondName();
+        this.showCancel = true;
+        this.showUndo = true;
+        this.undo.push('wasChangedDefault');
+        this.getName();
+        this.getLastname();
+        this.getSecondName();
+      }
     },
 /////////////////////////////////////////////////////////////////////////CancelAll///////////////////
     showCancelModal() {

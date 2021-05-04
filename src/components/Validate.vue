@@ -5,19 +5,18 @@
         class="modal__body key-style"
         v-if="modalName === 'AddOnFirstPage'"
     >
-      <h4 class="modal__tittle">Добавать новый контакт:</h4>
+      <h4 class="modal__tittle">Add new contact:</h4>
       <label class="modal__inputs-body">
         <input
             class="modal__input"
             type="text"
-            placeholder=" Имя"
+            placeholder=" Name"
             v-model="values[0]"
         />
         <input
             class="modal__input"
-            type="tel"
-            pattern="2[0-9]{3}-[0-9]{3}"
-            placeholder=" Номер телефона"
+            type="number"
+            placeholder=" Phone number"
             v-model="values[1]"
         />
       </label>
@@ -33,7 +32,7 @@
       </div>
     </div>
     <div class="modal__body key-style" v-else-if="modalName === 'RemoveOnFirstPage'">
-      <h4 class="modal__tittle">Вы уверены, что хотите удалить контакт {{ removeContactName }}?</h4>
+      <h4 class="modal__tittle">Are you sure you want to delete the contact {{ removeContactName }}?</h4>
       <div class="modal__buttons-body">
         <button class="modal__button non-selectable-element"
                 @click="removeContact()"
@@ -46,17 +45,17 @@
       </div>
     </div>
     <div class="modal__body key-style" v-else-if="modalName === 'AddOnSecondPage'">
-      <h4 class="modal__tittle">Добавать новое поле:</h4>
+      <h4 class="modal__tittle">Add new field:</h4>
       <label class="modal__inputs-body">
         <input
             class="modal__input"
             type="text"
-            placeholder="Ключ"
+            placeholder="Key"
             v-model="values[0]"
         />
         <input
             class="modal__input"
-            placeholder="Значение"
+            placeholder="Value"
             v-model="values[1]"
         />
       </label>
@@ -72,7 +71,7 @@
       </div>
     </div>
     <div class="modal__body key-style" v-else-if="modalName === 'RemoveOnSecondPage'">
-      <h4 class="modal__tittle">Вы уверены, что хотите удалить поле {{ removeFieldName }}?</h4>
+      <h4 class="modal__tittle">Are you sure you want to delete the field {{ removeFieldName }}?</h4>
       <div class="modal__buttons-body">
         <button class="modal__button non-selectable-element"
                 @click="removeField()"
@@ -85,7 +84,7 @@
       </div>
     </div>
     <div class="modal__body key-style" v-else-if="modalName === 'CanOnSecondPage'">
-      <h4 class="modal__tittle">Вы уверены, что хотите отменить все изменения?</h4>
+      <h4 class="modal__tittle">Are you sure you want to discard all changes?</h4>
       <div class="modal__buttons-body">
         <button class="modal__button non-selectable-element"
                 @click="cancelAll()"
@@ -172,6 +171,7 @@ export default {
 
   .modal__tittle {
     margin-top: 40px;
+    padding: 0 20px;
     flex: 0 0 20%;
     font-size: 25px;
   }

@@ -18,7 +18,7 @@
     </label>
     <button
         class="remover non-selectable-element"
-        title="Удалить поле"
+        title="Remove field"
         @click="showRemoveModal"
     >❌</button>
   </li>
@@ -30,6 +30,7 @@ export default {
   data() {
     return {
       keysValues: [],
+      trim: false,
       flag: true
     }
   },
@@ -40,8 +41,13 @@ export default {
     changeField() {
       this.keysValues[2] = this.val[0];
       this.keysValues[3] = this.val[1];
-      this.$emit('changeField', this.keysValues);
+      if (this.keysValues[0] === this.keysValues[2].trim() &&
+          this.keysValues[1] === this.keysValues[3].trim()) {
+        this.trim = true;
+      }
+      this.$emit('changeField', this.keysValues, this.trim);
       this.keysValues = [];
+      this.trim = false
       this.flag = true;
     },
     save(val) {
