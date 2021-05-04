@@ -42,7 +42,7 @@
               @click="showCancelModal()"
           >🔄</button>
         </div>
-        <h3 class="controls__title">Контактная информация</h3>
+        <h3 class="controls__title">Contact information</h3>
         <div class="controls__fake">
           <button
               class="controls__cancel controls__cancel-1 key-style non-selectable-element"
