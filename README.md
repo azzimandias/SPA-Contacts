@@ -1,30 +1,35 @@
 # vue-spa-contacts
+
 SPA application - Book of contacts, implemented by means of Vue.js.<br/>
 Test the functionality [here](https://azzimandias.github.io/vue-spa-contacts/).
+
 ---
+
 ## Project description
+
 This app has two pages:
 
 1. Contact list
 2. Contact Information
 ---
-###On the first page you can:
+
+### On the first page you can:
 
 - Add new contact;<br/>
-  ![gif](AC.gif)
+  ![gif](gifs/AC.gif)
 - Remove contacts;<br/>
-  ![gif](RC.gif)
+  ![gif](gifs/RC.gif)
 - Select contacts and go to the second page;
 
-###On the second page you can:
+### On the second page you can:
 
 - Add a new field;<br/>
-  ![gif](AF.gif)
+  ![gif](gifs/AF.gif)
 - Remove fields;<br/>
-  ![gif](RF.gif)
+  ![gif](gifs/RF.gif)
 - Undo all changes;<br/>
-  ![gif](CA.gif)
+  ![gif](gifs/CA.gif)
 - Undo the last change made "Step back";<br/>
-  ![gif](UC.gif)
+  ![gif](gifs/UC.gif)
 - Edit fields;  
 - Leave the page with saving all changes;
