@@ -5,14 +5,14 @@
           class="fields__key"
           type="text"
           v-model.trim="val[0]"
-          @mouseup="save(val)"
+          @mouseup="saveOldField(val)"
           @change="changeField"
       />|
       <input
           class="fields__value"
           type="text"
           v-model.trim="val[1]"
-          @mouseup="save(val)"
+          @mouseup="saveOldField(val)"
           @change="changeField"
       />
     </label>
@@ -35,28 +35,31 @@ export default {
     }
   },
   methods: {
-    showRemoveModal() {
-      this.$emit('showRemoveModal', this.val[0]);
-    },
-    changeField() {
-      this.keysValues[2] = this.val[0];
-      this.keysValues[3] = this.val[1];
-      if (this.keysValues[0] === this.keysValues[2].trim() &&
-          this.keysValues[1] === this.keysValues[3].trim()) {
-        this.trim = true;
-      }
-      this.$emit('changeField', this.keysValues, this.trim);
-      this.keysValues = [];
-      this.trim = false
-      this.flag = true;
-    },
-    save(val) {
+    saveOldField(val) {
       if (this.flag) {
         this.keysValues[0] = val[0];
         this.keysValues[1] = val[1];
         this.flag = false;
       }
     },
+    showRemoveModal() {
+      this.$emit('showRemoveModal', this.val[0]);
+    },
+    changeField() {
+      this.keysValues[2] = this.val[0];
+      this.keysValues[3] = this.val[1];
+      this.trimField();
+      this.$emit('changeField', this.keysValues, this.trim);
+      this.keysValues = [];
+      this.trim = false
+      this.flag = true;
+    },
+    trimField() {                                                 // Checking for adding spaces to fields
+      if (this.keysValues[0] === this.keysValues[2].trim() &&     // If only spaces were added, they will not be saved
+          this.keysValues[1] === this.keysValues[3].trim()) {
+        this.trim = true;
+      }
+    }
   }
 }
 </script>

@@ -10,7 +10,7 @@
               type="text"
               placeholder="Empty"
               v-model.trim="propFullContactName[0]"
-              @click="saving(propFullContactName)"
+              @click="saveOldFullName(propFullContactName)"
               @change="changeDefaultField()"
             />
           </label>
@@ -23,7 +23,7 @@
               type="text"
               placeholder="Empty"
               v-model.trim="propFullContactName[1]"
-              @click="saving(propFullContactName)"
+              @click="saveOldFullName(propFullContactName)"
               @change="changeDefaultField()"
             />
           </label>
@@ -38,7 +38,7 @@
               type="text"
               placeholder="Empty"
               v-model.trim="propFullContactName[2]"
-              @click="saving(propFullContactName)"
+              @click="saveOldFullName(propFullContactName)"
               @change="changeDefaultField()"
             />
           </label>
@@ -51,7 +51,7 @@
               type="number"
               placeholder="Empty"
               v-model.trim="propFullContactName[3]"
-              @click="saving(propFullContactName)"
+              @click="saveOldFullName(propFullContactName)"
               @change="changeDefaultField()"
             />
           </label>
@@ -72,7 +72,7 @@ export default {
     }
   },
   methods: {
-    saving(fullName) {
+    saveOldFullName(fullName) {
       if (this.flag) {
         for (let i = 0; i < fullName.length; i++) {
           this.oldFullName[i] = fullName[i];
@@ -81,17 +81,19 @@ export default {
       }
     },
     changeDefaultField() {
-      if (this.oldFullName[0] === this.propFullContactName[0].trim() &&
-          this.oldFullName[1] === this.propFullContactName[1].trim() &&
-          this.oldFullName[2] === this.propFullContactName[2].trim()) {
-        this.trim = true;
-        console.log('ddd')
-      }
+      this.trimField();
       this.$emit('changeDefaultField', this.propFullContactName, this.oldFullName, this.trim);
       this.oldFullName = [];
       this.trim = false;
       this.flag = true;
-    }
+    },
+    trimField() {                                                           // Checking for adding spaces to fields
+      if (this.oldFullName[0] === this.propFullContactName[0].trim() &&     // If only spaces were added,
+          this.oldFullName[1] === this.propFullContactName[1].trim() &&     // they will not be saved
+          this.oldFullName[2] === this.propFullContactName[2].trim()) {
+        this.trim = true;
+      }
+    },
   },
 }
 </script>

@@ -168,6 +168,7 @@ export default {
       this.getAllIndexes(this.whatsUndo[0][this.searchLastIndex(this.whatsUndo[0])]);
       delete this.savedMassiveOfValues[this.forOptimize[0]];
       this.whatsUndo[0].splice(this.searchLastIndex(this.whatsUndo[0]), 1);
+
       this.cleanForOptimize();
       this.getIsEmpty();
       this.forceRerenderFields();
@@ -191,6 +192,7 @@ export default {
       this.savedMassiveOfValues[this.forOptimize[0]] = this.forOptimize[1];
       Object.assign(this.savedMassiveOfValues, obj);
       this.whatsUndo[2].splice(this.searchLastIndex(this.whatsUndo[2]), 1);
+
       this.cleanForOptimize();
       this.forceRerenderFields();
     },
@@ -225,28 +227,43 @@ export default {
     cleanUndo() {
       this.undo = [];
     },
-/////////////////////////////////////////////////////////////////////////Add///////////////////
+/////////////////////////////////////////////////////////////////////////Add field///////////////////
     showAddModal() {
       this.modalName = 'AddOnSecondPage';
       this.wannaShowModal = true;
     },
     addField(key, value) {
       this.savedMassiveOfValues[key] = value;
+
       this.unShowModal();
       this.showCancel = true;
       this.showUndo = true;
+      this.getIsEmpty();
+
       this.undo.push('wasAdded');
       this.whatsUndo[0].push([key, value]);
-      this.fieldsIsEmpty = false;
     },
-/////////////////////////////////////////////////////////////////////////Remove///////////////////
+/////////////////////////////////////////////////////////////////////////Remove field///////////////////
     showRemoveModal(newKey) {
       this.modalName = 'RemoveOnSecondPage';
       this.removeFieldName = newKey;
       this.wannaShowModal = true;
     },
     removeField() {
-      let key = Object.keys(this.savedMassiveOfValues);
+      let key = this.findFieldPosition();
+      this.undo.push('wasRemoved');
+      this.whatsUndo[1].push([this.removeFieldName,
+                                this.savedMassiveOfValues[this.removeFieldName],
+                                key]);
+      delete (this.savedMassiveOfValues)[this.removeFieldName];
+
+      this.unShowModal();
+      this.showCancel = true;
+      this.showUndo = true;
+      this.getIsEmpty();
+    },
+    findFieldPosition() {                                               // Needed for the undoRemove()
+      let key = Object.keys(this.savedMassiveOfValues);                 // to return the field to the same position
       for (let element of key) {
         if (element === this.removeFieldName) {
           break;
@@ -256,53 +273,52 @@ export default {
       if (typeof key !== 'string') {
         key = 0;
       }
-      this.whatsUndo[1].push([this.removeFieldName,
-                                this.savedMassiveOfValues[this.removeFieldName],
-                                key]);
-      delete (this.savedMassiveOfValues)[this.removeFieldName];
-      this.unShowModal();
-      this.showCancel = true;
-      this.showUndo = true;
-      this.undo.push('wasRemoved');
-      this.getIsEmpty();
+      return key;
     },
-/////////////////////////////////////////////////////////////////////////Change///////////////////
+/////////////////////////////////////////////////////////////////////////Change field///////////////////
     changeField(keysValues, trim) {
       if (!trim) {
+        this.undo.push('wasChanged');
         this.whatsUndo[2].push(keysValues);
 
         if (keysValues[0] === keysValues[2]) {
-          this.savedMassiveOfValues[keysValues[0]] = keysValues[3];
+          this.changeValue(keysValues);
         }
         if (keysValues[0] !== keysValues[2]) {
-          let obj = this.ObjMutation(keysValues[0]);
-          Object.defineProperty(this.savedMassiveOfValues, keysValues[2],
-              Object.getOwnPropertyDescriptor(this.savedMassiveOfValues, keysValues[0]));
-          delete this.savedMassiveOfValues[keysValues[0]];
-          Object.assign(this.savedMassiveOfValues, obj);
+          this.changeKey(keysValues);
         }
 
         this.showCancel = true;
         this.showUndo = true;
-        this.undo.push('wasChanged');
       }
     },
-/////////////////////////////////////////////////////////////////////////ChangeDef///////////////////
+    changeKey(keysValues) {
+      let obj = this.ObjMutation(keysValues[0]);
+      Object.defineProperty(this.savedMassiveOfValues, keysValues[2],
+          Object.getOwnPropertyDescriptor(this.savedMassiveOfValues, keysValues[0]));
+      delete this.savedMassiveOfValues[keysValues[0]];
+      Object.assign(this.savedMassiveOfValues, obj);
+    },
+    changeValue(keysValues) {
+      this.savedMassiveOfValues[keysValues[0]] = keysValues[3];
+    },
+/////////////////////////////////////////////////////////////////////////ChangeDef field///////////////////
     changeDefaultField(fullName, oldFullName, trim) {
       if (!trim) {
+        this.undo.push('wasChangedDefault');
         this.whatsUndo[3].push(oldFullName);
+
         this.fullContactName = fullName;
         this.defaultFieldsMutation(fullName);
 
         this.showCancel = true;
         this.showUndo = true;
-        this.undo.push('wasChangedDefault');
         this.getName();
         this.getLastname();
         this.getSecondName();
       }
     },
-/////////////////////////////////////////////////////////////////////////CancelAll///////////////////
+/////////////////////////////////////////////////////////////////////////Cancel all changes///////////////////
     showCancelModal() {
       this.modalName = 'CanOnSecondPage';
       this.wannaShowModal = true;
@@ -331,8 +347,8 @@ export default {
     defaultFieldsMutation(fullName) {
       this.$store.commit('defaultFieldsMutation', fullName);
     },
-    ObjMutation(old_key) {
-      let obj = {};
+    ObjMutation(old_key) {                                                     // Needed to save all the fields
+      let obj = {};                                                            // that are below the added/removed field
       let flag = false
       if (old_key === 0) {
         obj = this.savedMassiveOfValues;
@@ -390,9 +406,9 @@ export default {
     },
   },
   computed: {
-    pup() {
-      addEventListener("popstate", this.cleanAllSavedData, false);
-    },
+    pup() {                                                                       // Needed to save all changes
+      addEventListener("popstate", this.cleanAllSavedData, false);    // when the user clicks
+    },                                                                            // on the browser arrows
     ...mapState(['contacts', 'index'])
   }
 }
