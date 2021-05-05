@@ -1,13 +1,18 @@
 # vue-spa-contacts
+
 SPA application - Book of contacts, implemented by means of Vue.js.<br/>
 Test the functionality [here](https://azzimandias.github.io/vue-spa-contacts/).
+
 ---
+
 ## Project description
 This app has two pages:
 
 1. Contact list
 2. Contact Information
+
 ---
+
 ###On the first page you can:
 
 - Add new contact;<br/>
