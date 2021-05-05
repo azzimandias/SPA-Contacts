@@ -13,7 +13,7 @@ This app has two pages:
 
 ---
 
-###On the first page you can:
+### On the first page you can:
 
 - Add new contact;<br/>
   ![gif](AC.gif)
@@ -21,7 +21,7 @@ This app has two pages:
   ![gif](RC.gif)
 - Select contacts and go to the second page;
 
-###On the second page you can:
+### On the second page you can:
 
 - Add a new field;<br/>
   ![gif](AF.gif)
