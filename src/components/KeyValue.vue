@@ -64,7 +64,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .fields__element {
     display: flex;
     justify-content: flex-end;
@@ -105,5 +105,29 @@ export default {
 
   .fields__value:focus {
     border-bottom: 1px solid black;
+  }
+
+  @media screen and (max-width: 720px) {
+    .fields__key {
+      font-size: 18px;
+      flex: 0 0 40%;
+      width: 30%;
+    }
+
+    .fields__value {
+      font-size: 18px;
+      flex: 0 0 50%;
+      width: 30%;
+    }
+  }
+
+  @media screen and (max-width: 515px) {
+    .fields__key {
+      font-size: 15px;
+    }
+
+    .fields__value {
+      font-size: 15px;
+    }
   }
 </style>

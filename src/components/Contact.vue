@@ -66,7 +66,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .contacts__element-body {
     height: 55px;
     margin-top: 20px;
@@ -121,5 +121,33 @@ export default {
     font-size: 20px;
     flex: 0 0 auto;
     background-color: inherit;
+  }
+
+  .remover1 {
+    padding: 10px;
+  }
+
+  @media screen and (max-width: 720px) {
+    .contacts__link1 {
+      font-size: 18px;
+    }
+  }
+
+  @media screen and (max-width: 360px) {
+    .contacts__link {
+      padding: 5px 0 5px 10px;
+    }
+
+    .contacts__link1 {
+      flex-direction: column;
+    }
+
+    .contacts__element-body {
+      height: 60px;
+    }
+
+    .contacts__element {
+      height: 55px;
+    }
   }
 </style>

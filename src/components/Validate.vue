@@ -143,7 +143,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .modal__background {
     position: fixed;
     top: 0;
@@ -204,5 +204,51 @@ export default {
     flex: 0 1 auto;
     font-size: 35px;
     background-color: inherit;
+  }
+
+  @media screen and (max-width: 720px) {
+    .modal__body {
+      width: 350px;
+      height: 200px;
+      left: calc(50% - 175px);
+    }
+
+    .modal__tittle {
+      font-size: 18px;
+      padding: 0 10px;
+    }
+
+    .modal__input {
+      width: 130px;
+      font-size: 17px;
+    }
+  }
+
+  @media screen and (max-width: 360px) {
+    .modal__body {
+      width: 250px;
+      height: 150px;
+      left: calc(50% - 125px);
+    }
+
+    .modal__tittle {
+      font-size: 16px;
+      padding: 0 10px;
+      margin: 20px 0;
+    }
+
+    .modal__input {
+      width: 100px;
+      font-size: 14px;
+    }
+
+    .modal__button {
+      width: 45px;
+      height: 45px;
+      margin: 10px;
+      flex: 0 1 auto;
+      font-size: 20px;
+      background-color: inherit;
+    }
   }
 </style>

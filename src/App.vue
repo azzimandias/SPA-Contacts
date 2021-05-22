@@ -8,43 +8,54 @@
 </template>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
+  * {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
 
-ul li{list-style: none}
+  ul li{list-style: none}
 
-a, a:visited {
-  text-decoration: none;
-  color: #2c3e50 !important;
-}
+  a, a:visited {
+    text-decoration: none;
+    color: #2c3e50 !important;
+  }
 
-button, input {
-  cursor: pointer;
-}
+  button, input {
+    cursor: pointer;
+  }
 
-input {outline:none;}
+  input {
+    outline:none;
+  }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-input[type=number] {
-  -moz-appearance: textfield;
-}
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+  }
+
+  .key-style {
+    background-color: honeydew;
+    border: 1px solid gray;
+    border-radius: 5px;
+    box-shadow: 0 5px 1px 1px gray;
+  }
+
+
 </style>

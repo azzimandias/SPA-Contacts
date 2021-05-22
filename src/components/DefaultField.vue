@@ -98,7 +98,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .default-fields__body {
     display: flex;
     flex-direction: column;
@@ -140,5 +140,32 @@ export default {
 
   .default-fields__input:focus {
     border-bottom: 1px solid black;
+  }
+
+  @media screen and (max-width: 720px) {
+    .default-fields__list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .default-fields__element {
+      width: 100%;
+      font-size: 15px;
+    }
+
+    .default-fields__value {
+      width: 50%;
+    }
+  }
+
+  @media screen and (max-width: 515px) {
+    .default-fields__key {
+      font-size: 15px;
+    }
+
+    .default-fields__input {
+      font-size: 15px;
+      width: 100px;
+    }
   }
 </style>

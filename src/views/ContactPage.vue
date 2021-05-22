@@ -223,6 +223,7 @@ export default {
         this.showUndo = false;
         this.showCancel = false;
       }
+      return '';
     },
     cleanUndo() {
       this.undo = [];
@@ -414,7 +415,20 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+  .nav__body_padding {
+    padding: 20px 0;
+  }
+
+  .nav__title_margin {
+    flex: 1 0 auto;
+    text-align: center;
+  }
+
+  .nav__adder_display {
+    display: none;
+  }
+
   .nav__link {
     width: 14px;
     height: 16px;
@@ -499,5 +513,117 @@ export default {
   .controls__adder:active {
     margin-top: 5px;
     box-shadow: none;
+  }
+
+  @media screen and (max-width: 720px) {
+    .nav__body_padding {
+      padding: 20px 10px;
+    }
+
+    .controls__fake {
+      width: 105px;
+    }
+
+    .controls__undo {
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
+      align-self: center;
+    }
+
+    .controls__cancel {
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
+      align-self: center;
+    }
+
+    .controls__title {
+      font-size: 18px;
+    }
+
+    .controls__adder {
+      height: 50px;
+      margin-top: 5px;
+      font-size: 18px;
+      align-self: center;
+    }
+
+    .controls__undo:active {
+      margin-top: 10px;
+    }
+
+    .controls__cancel:active {
+      margin-top: 10px;
+    }
+
+    .controls__adder:active {
+      margin-top: 10px;
+    }
+  }
+
+  @media screen and (max-width: 515px) {
+    .nav__title_margin {
+      font-size: 17px;
+    }
+
+    .non-visible {
+      display: none;
+    }
+
+    .nav__link-body {
+      width: 27px;
+    }
+
+    .link {
+      width: 100%;
+    }
+
+    .controls__title {
+      font-size: 16px;
+    }
+
+    .controls__fake {
+      width: 55px;
+    }
+
+    .controls__cancel {
+      display: none;
+    }
+
+    .controls__cancel-1 {
+      display: block;
+      margin-top: 5px;
+    }
+
+    .controls__adder {
+      display: none;
+    }
+
+    .nav__adder_display {
+      display: block;
+    }
+  }
+
+  @media screen and (max-width: 360px) {
+    .nav__title_margin {
+      font-size: 16px;
+    }
+
+    .controls__title {
+      font-size: 14px;
+    }
+
+    .controls__undo {
+      margin: 0;
+    }
+
+    .controls__fake {
+      width: 50px;
+    }
+
+    .controls__cancel {
+      margin: 5px 0 0 0;
+    }
   }
 </style>
