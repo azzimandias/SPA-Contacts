@@ -1,7 +1,7 @@
 # SPA-Contacts (vue)
 
 SPA application - Book of contacts, implemented by means of Vue.js.<br/>
-Test the functionality [here](https://azzimandias.github.io/vue-spa-contacts/).
+Test the functionality [here](https://azzimandias.github.io/SPA-Contacts/).
 
 ---
 
