@@ -15,6 +15,7 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
   }
 
   ul li{list-style: none}
