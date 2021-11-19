@@ -27,6 +27,7 @@
 
   button, input {
     cursor: pointer;
+    background-color: inherit;
   }
 
   input {
