@@ -99,6 +99,28 @@ export default {
 </script>
 
 <style scoped>
+  :root {
+    --border-color: black;
+    --text-color: #2c3e50;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --border-color: aliceblue;
+      --text-color: aliceblue;
+    }
+  }
+
+  [data-theme="light"] {
+    --border-color: black;
+    --text-color: #2c3e50;
+  }
+
+  [data-theme="dark"] {
+    --border-color: aliceblue;
+    --text-color: aliceblue;
+  }
+
   .default-fields__body {
     display: flex;
     flex-direction: column;
@@ -136,10 +158,11 @@ export default {
     text-align: left;
     font-size: 18px;
     background-color: inherit;
+    color: var(--text-color);
   }
 
   .default-fields__input:focus {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--border-color);
   }
 
   @media screen and (max-width: 720px) {

@@ -144,6 +144,28 @@ export default {
 </script>
 
 <style scoped>
+  :root {
+    --bac-color: rgba(240, 255, 240, 0.7);
+    --border-color: black;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --border-color: aliceblue;
+      --bac-color: grey;
+    }
+  }
+
+  [data-theme="light"] {
+    --bac-color: rgba(240, 255, 240, 0.7);
+    --border-color: black;
+  }
+
+  [data-theme="dark"] {
+    --border-color: aliceblue;
+    --bac-color: grey;
+  }
+
   .modal__background {
     position: fixed;
     top: 0;
@@ -152,8 +174,7 @@ export default {
     height: 100%;
     display: flex;
     justify-content: center;
-
-    background-color: rgba(240, 255, 240, 0.7);
+    background-color: var(--bac-color);
     //transition: all 0.8s ease 0s;
   }
 
@@ -188,7 +209,7 @@ export default {
 
     font-size: 20px;
     background-color: inherit;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--border-color);
   }
 
   .modal__buttons-body {

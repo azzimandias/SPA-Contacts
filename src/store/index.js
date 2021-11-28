@@ -91,6 +91,10 @@ export default new Vuex.Store({
       state.contacts[state.index].secondName = array[2];
       state.contacts[state.index].telNumber = array[3];
     },
+    setContacts(state, array) {
+      console.log(array)
+      state.contacts = array;
+    }
   },
   actions: {
   },

@@ -416,6 +416,38 @@ export default {
 </script>
 
 <style scoped>
+  :root {
+    --text-color: #2c3e50;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text-color: aliceblue;
+    }
+  }
+
+  [data-theme="light"] {
+    --text-color: #2c3e50;
+  }
+
+  [data-theme="dark"] {
+    --text-color: aliceblue;
+  }
+
+  p, input {
+    background-color: inherit;
+  }
+
+  .nav__content{
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    align-items: center;
+    justify-content: center;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 30px 0 20px;
+  }
+
   .nav__body_padding {
     padding: 20px 0;
   }
@@ -436,7 +468,7 @@ export default {
 
   .link {
     font-size: 20px;
-    color: #2c3e50;
+    color: var(--text-color);
     font-weight: bold;
   }
 

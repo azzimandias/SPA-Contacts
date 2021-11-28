@@ -1,5 +1,5 @@
 <template>
   <div>
-    <h1>Ничего не найдено</h1>
+    <h1>Page not found</h1>
   </div>
 </template>

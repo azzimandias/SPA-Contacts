@@ -8,6 +8,36 @@
 </template>
 
 <style>
+  :root {
+    --text-color: #2c3e50;
+    --border-key: grey;
+    --bc-key: honeydew;
+    --background-color: white;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text-color: aliceblue;
+      --border-key: aliceblue;
+      --bc-key: darkslategrey;
+      --background-color: black;
+    }
+  }
+
+  [data-theme="light"] {
+    --text-color: #2c3e50;
+    --border-key: grey;
+    --bc-key: honeydew;
+    --background-color: white;
+  }
+
+  [data-theme="dark"] {
+    --text-color: aliceblue;
+    --border-key: aliceblue;
+    --bc-key: darkslategrey;
+    --background-color: black;
+  }
+
   * {
     margin: 0;
     padding: 0;
@@ -17,11 +47,19 @@
     box-sizing: border-box;
   }
 
+  body {
+    background-color: var(--background-color);
+  }
+
+  button {
+    background-color: inherit;
+  }
+
   ul li{list-style: none}
 
   a, a:visited {
     text-decoration: none;
-    color: #2c3e50 !important;
+    color: var(--text-color) !important;
   }
 
   button, input {
@@ -47,15 +85,14 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #2c3e50;
+    color: var(--text-color);
+    transition: 0.3s;
   }
 
   .key-style {
-    background-color: honeydew;
-    border: 1px solid gray;
+    background-color: var(--bc-key);
+    border: 1px solid var(--border-key);
     border-radius: 5px;
-    box-shadow: 0 5px 1px 1px gray;
+    box-shadow: 0 5px 1px 1px var(--border-key);
   }
-
-
 </style>

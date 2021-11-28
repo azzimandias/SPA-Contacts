@@ -65,6 +65,28 @@ export default {
 </script>
 
 <style scoped>
+  :root {
+    --border-color: black;
+    --text-color: #2c3e50;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --border-color: aliceblue;
+      --text-color: aliceblue;
+    }
+  }
+
+  [data-theme="light"] {
+    --border-color: black;
+    --text-color: #2c3e50;
+  }
+
+  [data-theme="dark"] {
+    --border-color: aliceblue;
+    --text-color: aliceblue;
+  }
+
   .fields__element {
     display: flex;
     justify-content: flex-end;
@@ -90,10 +112,11 @@ export default {
     font-weight: bold;
     font-size: 20px;
     background-color: inherit;
+    color: var(--text-color);
   }
 
   .fields__key:focus {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--border-color);
   }
 
   .fields__value {
@@ -101,10 +124,11 @@ export default {
     font-size: 20px;
     background-color: inherit;
     margin-right: 10px;
+    color: var(--text-color);
   }
 
   .fields__value:focus {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--border-color);
   }
 
   @media screen and (max-width: 720px) {
