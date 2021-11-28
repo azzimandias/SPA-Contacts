@@ -45,6 +45,7 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
@@ -64,6 +65,7 @@
 
   button, input {
     cursor: pointer;
+    background-color: inherit;
   }
 
   input {
