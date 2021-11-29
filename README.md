@@ -1,4 +1,4 @@
-# SPA-Contacts 📔
+# Contacts 📔
 
 SPA application - Book of contacts, implemented by means of Vue.js.<br/>
 Test the functionality [here](https://azzimandias.github.io/SPA-Contacts/).
