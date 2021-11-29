@@ -4,7 +4,7 @@
       <div class="nav__body">
         <div class="nav__content">
           <ThemeSwitcher/>
-          <h2 class="nav__title">Contacts</h2>
+          <h2 class="nav__title">Contacts 📔</h2>
           <button
               class="nav__adder non-selectable-element"
               title="Add contact"
