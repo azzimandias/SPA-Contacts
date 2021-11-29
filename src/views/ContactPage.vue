@@ -18,12 +18,14 @@
             {{ getName() }}
             {{ getSecondName() }}
           </div>
-          <div class="nav__link non-visible"></div>
-          <button
+<!--          <div class="nav__link non-visible"></div>-->
+          <div>
+            <button
               class="nav__adder nav__adder_display non-selectable-element"
               title="Add field"
               @click="showAddModal()"
-          >➕</button>
+            >➕</button>
+          </div>
         </div>
       </div>
     </div>
@@ -595,6 +597,14 @@ export default {
   }
 
   @media screen and (max-width: 515px) {
+    .nav__content{
+      grid-template-columns: 1fr 2fr 1fr;
+    }
+
+    .nav__title {
+      text-align: center;
+    }
+
     .nav__title_margin {
       font-size: 17px;
     }
@@ -634,6 +644,7 @@ export default {
 
     .nav__adder_display {
       display: block;
+      margin-left: auto;
     }
   }
 
