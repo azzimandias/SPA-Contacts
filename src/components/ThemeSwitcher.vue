@@ -93,23 +93,27 @@ export default {
 
 <style>
 :root {
+  --invert-color: honeydew;
   --invert-1: invert(100%);
   --invert-2: invert(0);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
+      --invert-color: #d0b0b0;
       --invert-1: invert(0);
       --invert-2: invert(100%);
     }
   }
 
   [data-theme="light"] {
+    --invert-color: honeydew;
     --invert-1: invert(100%);
     --invert-2: invert(0);
   }
 
   [data-theme="dark"] {
+    --invert-color: #d0b0b0;
     --invert-1: invert(0);
     --invert-2: invert(100%);
   }
@@ -117,6 +121,7 @@ export default {
   .themes {
     width: 100px;
     height: 38px;
+    margin-top: 5px;
   }
 
   .arrow {
@@ -205,7 +210,7 @@ export default {
     z-index: -1;
     box-shadow: 0 0 0 2px black;
     border-radius: 18px;
-    background-color: honeydew;
+    background-color: var(--invert-color);
     background-repeat: no-repeat;
     background-image: url('../assets/icons/status.svg');
     background-size: 32px;
