@@ -417,7 +417,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   :root {
     --text-color: #2c3e50;
   }
@@ -442,7 +442,7 @@ export default {
 
   .nav__content{
     display: grid;
-    grid-template-columns: 18px 1fr;
+    grid-template-columns: 1fr 6fr 1fr;
     align-items: center;
     justify-content: center;
     max-width: 720px;
