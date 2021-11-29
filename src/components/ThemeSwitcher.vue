@@ -146,6 +146,7 @@ export default {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     border: none;
+    transition: 0.3s;
   }
 
   .switcher--close {
@@ -238,5 +239,89 @@ export default {
 
   .switcher__status {
     filter: var(--invert-2);
+  }
+
+  @media screen and (max-width: 720px) {
+    .themes {
+      width: 92px;
+      height: 32px;
+    }
+
+    .switcher {
+      padding: 0;
+    }
+
+    .switcher__radio {
+      width: 30px;
+      height: 30px;
+      background-size: 22px;
+    }
+
+    .switcher__status {
+      width: 91px;
+      height: 30px;
+      background-size: 26px;
+    }
+  }
+
+  @media screen and (max-width: 515px) {
+    .themes {
+      display: block;
+      width: 0;
+    }
+
+    .arrow {
+      display: block;
+      position: fixed;
+      z-index: 1;
+      top: calc(90% - 22px);
+      left: 0;
+      transition: 0.3s;
+    }
+
+    .arrow--un-clicked {
+      margin-left: 0;
+    }
+
+    .arrow--clicked {
+      margin-left: 50px;
+    }
+
+    .switcher {
+      position: fixed;
+      opacity: 0;
+      z-index: 1;
+      top: calc(90% - 50px);
+      left: -38px;
+      grid-template-columns: 1fr;
+    }
+
+    .switcher--close {
+      margin-left: 0;
+      opacity: 0;
+    }
+
+    .switcher--open {
+      margin-left: 50px;
+      opacity: 1;
+    }
+
+    .switcher__radio--light:checked ~ .switcher__status {
+      background-position: top 2px center;
+    }
+
+    .switcher__radio--auto:checked ~ .switcher__status {
+      background-position: center center;
+    }
+
+    .switcher__radio--dark:checked ~ .switcher__status {
+      background-position: bottom 2px center;
+    }
+
+    .switcher__status {
+      width: 30px;
+      height: 90px;
+      background-size: 26px;
+    }
   }
 </style>
