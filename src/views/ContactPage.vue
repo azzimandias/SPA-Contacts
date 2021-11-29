@@ -417,7 +417,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   :root {
     --text-color: #2c3e50;
   }

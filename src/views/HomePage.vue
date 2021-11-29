@@ -191,7 +191,7 @@ export default {
 
   @media screen and (max-width: 515px) {
     .nav__content{
-      grid-template-columns: 27px 1rem 27px;
+      grid-template-columns: 27px 1fr 27px;
     }
 
     .nav__title {
